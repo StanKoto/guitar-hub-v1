@@ -2,11 +2,11 @@ const { User } = require('../models/User');
 const { asyncHandler } = require('../utils/asyncHandler');
 
 exports.auth_get = asyncHandler((req, res, next) => {
-  res.render('auth');
+  res.render('auth', { title: 'Authorization' });
 });
 
 exports.login_get = asyncHandler((req, res, next) => {
-  res.render('login');
+  res.render('login', { title: 'Log in' });
 });
 
 exports.login_post = asyncHandler(async (req, res, next) => {
@@ -16,7 +16,7 @@ exports.login_post = asyncHandler(async (req, res, next) => {
     if (err) console.error(err)
     req.session.user = user._id;
     req.session.save(err => {
-      if (err) return next(err)
+      if (err) throw err
       res.redirect('guitar-tips');
     });
   });
@@ -25,7 +25,7 @@ exports.login_post = asyncHandler(async (req, res, next) => {
 exports.logout_get = asyncHandler((req, res, next) => {
   req.session.user = null;
   req.session.save(err => {
-    if (err) return next(err)
+    if (err) throw err
     req.session.regenerate(err => {
       if (err) console.error(err)
       res.redirect('/auth');
@@ -34,7 +34,7 @@ exports.logout_get = asyncHandler((req, res, next) => {
 });
 
 exports.signup_get = asyncHandler((req, res, next) => {
-  res.render('signup');
+  res.render('signup', { title: 'Sign up' });
 });
 
 exports.signup_post = asyncHandler(async (req, res, next) => {
@@ -43,7 +43,7 @@ exports.signup_post = asyncHandler(async (req, res, next) => {
     if (err) console.error(err)
     req.session.user = user._id;
     req.session.save(err => {
-      if (err) return next(err)
+      if (err) throw err
       res.redirect('guitar-tips');
     });
   });

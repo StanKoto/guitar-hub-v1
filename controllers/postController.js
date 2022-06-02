@@ -4,7 +4,7 @@ const { ErrorResponse } = require('../utils/error-handling');
 
 exports.posts_get = asyncHandler(async (req, res, next) => {
   const posts = await Post.find();
-  res.render('posts', { posts });
+  res.render('posts', { posts, title: 'Posts' });
 });
 
 exports.posts_post = asyncHandler(async (req, res, next) => {
@@ -16,16 +16,16 @@ exports.posts_post = asyncHandler(async (req, res, next) => {
 exports.post_get = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const post = await Post.findById(id);
-  if (!post) return next(new ErrorResponse(`No post found with ID of ${id}`, 404))
+  if (!post) throw new ErrorResponse(`No post found with ID of ${id}`, 404)
   res.send(post);
 });
 
 exports.post_put = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   let post = await Post.findById(id);
-  if (!post) return next(new ErrorResponse(`No post found with ID of ${id}`, 404))
+  if (!post) throw new ErrorResponse(`No post found with ID of ${id}`, 404)
   if (!post.author.equals(req.user._id) && req.user.role === 'user') {
-    return next(new ErrorResponse('You are not authorized to alter this resource!', 401));
+    throw new ErrorResponse('You are not authorized to alter this resource!', 401);
   }
   post = await Post.findByIdAndUpdate(id, req.body, {
     new: true
@@ -36,9 +36,9 @@ exports.post_put = asyncHandler(async (req, res, next) => {
 exports.post_delete = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   let post = await Post.findById(id);
-  if (!post) return next(new ErrorResponse(`No post found with ID of ${id}`, 404))
+  if (!post) throw new ErrorResponse(`No post found with ID of ${id}`, 404)
   if (!post.author.equals(req.user._id) && req.user.role === 'user') { 
-    return next(new ErrorResponse('You are not authorized to delete this resource!', 401));
+    throw new ErrorResponse('You are not authorized to delete this resource!', 401);
   }
   post = await Post.findByIdAndDelete(id);
   res.send(post);
