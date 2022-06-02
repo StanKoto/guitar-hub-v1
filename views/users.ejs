@@ -1,0 +1,14 @@
+<%- include('partials/header'); %>
+  <h1>Here you can manage the users on the guitar wiki portal</h1>
+  <br>
+  <ul>
+    <% for (user of users) { %>
+      <li>
+        <div>Username: <%= user.username %></div>
+        <div>Email: <%= user.email %></div>
+        <div>Status: <%= user.status %></div>
+        <div>Role: <%= user.role %></div>
+      </li>
+    <% } %>
+  </ul>
+<%- include('partials/footer'); %>
