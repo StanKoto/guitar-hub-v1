@@ -4,7 +4,7 @@ const { ErrorResponse } = require('../utils/error-handling');
 
 exports.users_get = asyncHandler(async (req, res, next) => {
   const users = await User.find();
-  res.send(users);
+  res.render('users', { users });
 });
 
 exports.users_post = asyncHandler(async (req, res, next) => {

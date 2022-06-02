@@ -35,6 +35,7 @@ handleErrors = (err, req, res, next) => {
     error = new ErrorResponse(`Resource not found with ID of ${err.value}`, 404);
   }
 
+  console.error(error);
   res.status(error.statusCode || 500).render(error.statusCode ? error.statusCode.toString() : '500');
 };
 

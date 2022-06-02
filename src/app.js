@@ -9,6 +9,7 @@ const userRouter = require('../routes/userRoutes');
 const postRouter = require('../routes/postRoutes');
 const authRouter = require('../routes/authRoutes');
 const { handleErrors } = require('../utils/error-handling');
+const { checkUser } = require('../utils/auth');
 
 dotenv.config({ path: path.join(__dirname, '../config.env') });
 
@@ -34,11 +35,11 @@ dotenv.config({ path: path.join(__dirname, '../config.env') });
     }
   }));
 
+  app.get('*', checkUser);
   app.use('/users', userRouter);
   app.use('/posts', postRouter);
   app.use('/auth', authRouter);
   app.use(mainRouter);
-
   app.use(handleErrors);
 
   const PORT = process.env.PORT || 3000;

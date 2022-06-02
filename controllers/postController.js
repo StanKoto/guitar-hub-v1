@@ -4,7 +4,7 @@ const { ErrorResponse } = require('../utils/error-handling');
 
 exports.posts_get = asyncHandler(async (req, res, next) => {
   const posts = await Post.find();
-  res.send(posts);
+  res.render('posts', { posts });
 });
 
 exports.posts_post = asyncHandler(async (req, res, next) => {
