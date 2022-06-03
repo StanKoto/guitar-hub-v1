@@ -17,7 +17,7 @@ exports.login_post = asyncHandler(async (req, res, next) => {
     req.session.user = user._id;
     req.session.save(err => {
       if (err) throw err
-      res.redirect('guitar-tips');
+      res.json({ user });
     });
   });
 });
@@ -44,7 +44,7 @@ exports.signup_post = asyncHandler(async (req, res, next) => {
     req.session.user = user._id;
     req.session.save(err => {
       if (err) throw err
-      res.redirect('guitar-tips');
+      res.json({ user });
     });
   });
 });

@@ -12,6 +12,10 @@ exports.about_get = asyncHandler((req, res, next) => {
   res.render('about', { title: 'About' });
 });
 
+exports.serverError_get = asyncHandler((req, res, next) => {
+  res.render('500', { title: '500' });
+})
+
 exports.badRequest_get = asyncHandler((req, res, next) => {
   res.render('404', { title: '404' });
 });
