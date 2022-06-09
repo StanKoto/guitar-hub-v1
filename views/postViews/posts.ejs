@@ -1,0 +1,11 @@
+<%- include('../partials/header'); %>
+  <ul>
+    <% for (post of posts) { %>
+      <li>
+        <a href="/posts/<%= post._id %>/<%= post.slug %>"><%= post.title %></a>
+        <br>
+        <span><%= post.contents %></span>
+      </li>
+    <% } %>
+  </ul>
+<%- include('../partials/footer'); %>

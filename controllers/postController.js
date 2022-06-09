@@ -3,8 +3,8 @@ const { asyncHandler } = require('../utils/asyncHandler');
 const { ErrorResponse } = require('../utils/error-handling');
 
 exports.posts_get = asyncHandler(async (req, res, next) => {
-  const posts = await Post.find();
-  res.render('posts', { posts, title: 'Posts' });
+  const posts = await Post.find().populate('author');
+  res.render('postViews/posts', { posts, title: 'Posts' });
 });
 
 exports.posts_post = asyncHandler(async (req, res, next) => {
@@ -13,11 +13,15 @@ exports.posts_post = asyncHandler(async (req, res, next) => {
   res.send(post);
 });
 
+exports.createPost_get = asyncHandler((req, res, next) => {
+  res.render('postViews/createPost', { title: 'Create a post' });
+});
+
 exports.post_get = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
-  const post = await Post.findById(id);
+  const post = await Post.findById(id).populate('author');
   if (!post) throw new ErrorResponse(`No post found with ID of ${id}`, 404)
-  res.send(post);
+  res.render('postViews/post', { post, title: post.title });
 });
 
 exports.post_put = asyncHandler(async (req, res, next) => {
@@ -41,5 +45,5 @@ exports.post_delete = asyncHandler(async (req, res, next) => {
     throw new ErrorResponse('You are not authorized to delete this resource!', 401);
   }
   post = await Post.findByIdAndDelete(id);
-  res.send(post);
+  res.json({ post });
 });

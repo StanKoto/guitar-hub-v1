@@ -1,0 +1,12 @@
+<%- include('../partials/header'); %>
+  <ul>
+    <li>Username: <%= user.username %></li>
+    <li>Email: <%= user.email %></li>
+    <li>Status: <%= user.status %></li>
+    <li>Role: <%= user.role %></li>
+  </ul>
+  <br>
+  <button id="delete-user">Delete user</button>
+
+  <script src="/js/userScripts/deleteUser.js"></script>
+<%- include('../partials/footer'); %>

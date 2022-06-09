@@ -10,7 +10,7 @@
   <nav>
     <h1><a href="/">Guitar Wiki</a></h1>
     <ul>
-      <% if (!user) { %>
+      <% if (!currentUser) { %>
         <li><a href="/auth">Register / Log in</a></li>
       <% } else { %>
         <li><a href="/auth/logout">Log out</a></li>

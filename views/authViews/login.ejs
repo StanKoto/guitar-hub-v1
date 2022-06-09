@@ -1,0 +1,14 @@
+<%- include('../partials/header'); %>
+  <form>
+    <h2>Please sign in using your credentials</h2>
+    <label for="email">Email</label>
+    <input type="text" name="email">
+    <div class="email error"></div>
+    <label for="password">Password</label>
+    <input type="password" name="password">
+    <div class="password error"></div>
+    <button>Log in</button>
+  </form>
+
+  <script src="/js/authScripts/login.js"></script>
+<%- include('../partials/footer'); %>

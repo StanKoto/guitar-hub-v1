@@ -2,11 +2,11 @@ const { User } = require('../models/User');
 const { asyncHandler } = require('../utils/asyncHandler');
 
 exports.auth_get = asyncHandler((req, res, next) => {
-  res.render('auth', { title: 'Authorization' });
+  res.render('authViews/auth', { title: 'Authorization' });
 });
 
 exports.login_get = asyncHandler((req, res, next) => {
-  res.render('login', { title: 'Log in' });
+  res.render('authViews/login', { title: 'Log in' });
 });
 
 exports.login_post = asyncHandler(async (req, res, next) => {
@@ -34,7 +34,7 @@ exports.logout_get = asyncHandler((req, res, next) => {
 });
 
 exports.signup_get = asyncHandler((req, res, next) => {
-  res.render('signup', { title: 'Sign up' });
+  res.render('authViews/signup', { title: 'Sign up' });
 });
 
 exports.signup_post = asyncHandler(async (req, res, next) => {

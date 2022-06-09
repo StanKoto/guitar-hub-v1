@@ -16,9 +16,9 @@ exports.checkRole = asyncHandler((req, res, next) => {
 
 exports.checkUser = asyncHandler(async (req, res, next) => {
   if (req.session.user) {
-    res.locals.user = await User.findById(req.session.user);
+    res.locals.currentUser = await User.findById(req.session.user);
     return next();
   }
-  res.locals.user = null;
+  res.locals.currentUser = null;
   next();
 });
