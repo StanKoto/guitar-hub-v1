@@ -5,7 +5,11 @@
   <br>
   <span>Author: <%= post.author.username %></span>
   <br>
-  <% if (currentUser.role === 'admin') { %>
+  <% if (currentUser.role === 'admin' || post.author._id.equals(currentUser._id)) { %>
+    <!-- <form action="/posts/<%= post._id %>/<%= post.slug %>/update-post">
+      <button>Update post</button>
+    </form> -->
+    <a href="/posts/<%= post._id %>/<%= post.slug %>/update-post">Update post</a>
     <button id="delete-post">Delete post</button>
   <% } %>
 

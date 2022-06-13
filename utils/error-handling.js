@@ -6,17 +6,7 @@ class ErrorResponse extends Error {
 }
 
 handleErrors = (err, req, res, next) => {
-  let errors = { username: '', email: '', password: '', title: '', contents: '' };
-
-  if (err.message === 'Incorrect email') {
-    errors.email = 'That email is not registered';
-    return res.status(400).json({ errors });
-  }
-  
-  if (err.message === 'Incorrect password') {
-    errors.password = 'That password is incorrect';
-    return res.status(400).json({ errors });
-  }
+  let errors = { username: '', email: '', password: '', credentials: '', title: '', contents: '' };
 
   if (err.code === 11000) {
     errors[Object.keys(err.keyValue)[0]] = `That ${Object.keys(err.keyValue)[0]} is already registered`;
@@ -27,6 +17,16 @@ handleErrors = (err, req, res, next) => {
     for ({ properties } of Object.values(err.errors)) {
       errors[properties.path] = properties.message;
     }
+    return res.status(400).json({ errors });
+  }
+
+  if (err.message === 'Invalid credentials') {
+    errors.credentials = 'Invalid credentials, please check your email and password and try again';
+    return res.status(400).json({ errors });
+  }
+  
+  if (err.message === 'Invalid password') {
+    errors.credentials = 'Incorrect current password, please try again';
     return res.status(400).json({ errors });
   }
 

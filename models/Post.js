@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const { User } = require('../models/User');
 const slugify = require('slugify');
+const { User } = require('../models/User');
 
 const PostSchema = new mongoose.Schema({
   title: {
