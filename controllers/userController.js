@@ -21,7 +21,7 @@ exports.user_get = asyncHandler(async (req, res, next) => {
 
 exports.user_put = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
-  const user = await User.findByIdAndUpdate(id, req.body, { new: true });
+  const user = await User.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
   if (!user) throw new ErrorResponse(`No user found with ID of ${id}`, 404)
   res.send(user);
 });

@@ -1,0 +1,29 @@
+<%- include('../partials/header'); %>
+  <form id="details-form">
+    <span>Username: <%= user.username %></span>
+    <br>
+    <label for="username">Change username to:</label>
+    <input type="text" name="username">
+    <div class="username error"></div>
+    <span>Email: <%= user.email %></span>
+    <br>
+    <label for="email">Change email to:</label>
+    <input type="text" name="email">
+    <div class="email error"></div>
+    <button>Update profile details</button>
+  </form>
+  <br>
+  <form id="password-form">
+    <span>Change password</span>
+    <br>
+    <label for="currentPassword">Please enter your current password:</label>
+    <input type="password" name="currentPassword" required>
+    <div class="match password error"></div>
+    <label for="newPassword">Please enter your new password:</label>
+    <input type="password" name="newPassword" required>
+    <div class="validate password error"></div>
+    <button>Update profile password</button>
+  </form>
+
+  <script src="/js/authScripts/update.js"></script>
+<%- include('../partials/footer'); %>

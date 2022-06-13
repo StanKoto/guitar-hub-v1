@@ -1,3 +1,4 @@
+const slugify = require('slugify');
 const { Post } = require('../models/Post');
 const { asyncHandler } = require('../utils/asyncHandler');
 const { ErrorResponse } = require('../utils/error-handling');
@@ -10,11 +11,17 @@ exports.posts_get = asyncHandler(async (req, res, next) => {
 exports.posts_post = asyncHandler(async (req, res, next) => {
   req.body.author = req.user._id;
   const post = await Post.create(req.body);
-  res.send(post);
+  res.json({ post });
 });
 
 exports.createPost_get = asyncHandler((req, res, next) => {
   res.render('postViews/createPost', { title: 'Create a post' });
+});
+
+exports.updatePost_get = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const post = await Post.findById(id);
+  res.render('postViews/updatePost', { title: post.title, contents: post.contents });
 });
 
 exports.post_get = asyncHandler(async (req, res, next) => {
@@ -31,10 +38,12 @@ exports.post_put = asyncHandler(async (req, res, next) => {
   if (!post.author.equals(req.user._id) && req.user.role === 'user') {
     throw new ErrorResponse('You are not authorized to alter this resource!', 401);
   }
+  req.body.slug = slugify(req.body.title, { lower: true });
   post = await Post.findByIdAndUpdate(id, req.body, {
+    runValidators: true,
     new: true
   });
-  res.send(post);
+  res.json({ post });
 });
 
 exports.post_delete = asyncHandler(async (req, res, next) => {

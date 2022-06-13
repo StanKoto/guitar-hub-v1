@@ -4,7 +4,6 @@ const { ErrorResponse } = require('../utils/error-handling');
 
 exports.checkAuthentication = asyncHandler(async (req, res, next) => {
   if (req.session.user) {
-    req.user = await User.findById(req.session.user);
     next();
   } else res.redirect('/auth')
 });
@@ -16,7 +15,9 @@ exports.checkRole = asyncHandler((req, res, next) => {
 
 exports.checkUser = asyncHandler(async (req, res, next) => {
   if (req.session.user) {
-    res.locals.currentUser = await User.findById(req.session.user);
+    const user = await User.findById(req.session.user);
+    req.user = user;
+    res.locals.currentUser = user;
     return next();
   }
   res.locals.currentUser = null;
