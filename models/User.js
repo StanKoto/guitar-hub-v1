@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
+const slugify = require('slugify');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
@@ -8,6 +9,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please provide a username'],
     unique: true
   },
+  slug: String,
   email: {
     type: String,
     required: [true, 'Please provide an email'],
@@ -35,8 +37,9 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', async function () {
-  const saltRounds = 10;
-  this.password = await bcrypt.hash(this.password, saltRounds);
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+    this.slug = slugify(this.username, { lower: true });
 });
 
 userSchema.statics.login = async function (email, password) {

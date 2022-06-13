@@ -6,8 +6,7 @@ class ErrorResponse extends Error {
 }
 
 handleErrors = (err, req, res, next) => {
-  let error = { ...err };
-  let errors = { username: '', email: '', password: '' };
+  let errors = { username: '', email: '', password: '', title: '', contents: '' };
 
   if (err.message === 'Incorrect email') {
     errors.email = 'That email is not registered';
@@ -31,11 +30,12 @@ handleErrors = (err, req, res, next) => {
     return res.status(400).json({ errors });
   }
 
-  if (err.name === 'CastError') {
-    error = new ErrorResponse(`Resource not found with ID of ${err.value}`, 404);
-  }
+  if (err.name === 'CastError') err = new ErrorResponse(`Resource not found with ID of ${err.value}`, 404)
 
-  res.status(error.statusCode || 500).render(error.statusCode ? error.statusCode.toString() : '500');
+  if (err.statusCode) return res.status(err.statusCode).render(`errorViews/${err.statusCode.toString()}`, { title: err.statusCode.toString(), message: err.message })
+
+  console.error(err);
+  res.status(500).render('errorViews/500', { title: '500'});
 };
 
 module.exports = { ErrorResponse, handleErrors };

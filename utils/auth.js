@@ -1,19 +1,24 @@
 const { User } = require('../models/User');
+const { asyncHandler } = require('../utils/asyncHandler');
 const { ErrorResponse } = require('../utils/error-handling');
 
-exports.checkAuthentication = async (req, res, next) => {
+exports.checkAuthentication = asyncHandler(async (req, res, next) => {
   if (req.session.user) {
-    try {
-      req.user = await User.findById(req.session.user);
-      next()
-    } catch (err) {
-      console.error(err);
-    }
-  }
-  else res.redirect('/auth')
-};
+    req.user = await User.findById(req.session.user);
+    next();
+  } else res.redirect('/auth')
+});
 
-exports.checkRole = (req, res, next) => {
+exports.checkRole = asyncHandler((req, res, next) => {
   if (req.user.role === 'admin') return next()
-  next(new ErrorResponse('You are not authorized to access this resource!'), 401);
-};
+  throw new ErrorResponse('You are not authorized to access this resource!', 401);
+});
+
+exports.checkUser = asyncHandler(async (req, res, next) => {
+  if (req.session.user) {
+    res.locals.currentUser = await User.findById(req.session.user);
+    return next();
+  }
+  res.locals.currentUser = null;
+  next();
+});

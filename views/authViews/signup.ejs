@@ -1,0 +1,17 @@
+<%- include('../partials/header'); %>
+  <form>
+    <h2>Please enter your details to create a new user profile</h2>
+    <label for="username">Username</label>
+    <input type="text" name="username">
+    <div class="username error"></div>
+    <label for="email">Email</label>
+    <input type="text" name="email">
+    <div class="email error"></div>
+    <label for="password">Password</label>
+    <input type="password" name="password">
+    <div class="password error"></div>
+    <button>Sign up</button>
+  </form>
+
+  <script src="/js/authScripts/signup.js"></script>
+<%- include('../partials/footer'); %>

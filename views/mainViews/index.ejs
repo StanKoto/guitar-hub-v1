@@ -1,0 +1,11 @@
+<%- include('../partials/header'); %>
+  <h1>Welcome to the most awesome guitar wiki!</h1>
+  <br>
+  <ul>
+    <% if (currentUser && currentUser.role === "admin") { %>
+      <li><a href="/users">Browse guitar wiki users</a></li>
+    <% } %>
+    <li><a href="/guitar-tips">Browse guitar tips</a></li>
+    <li><a href="/about">Learn more about this project</a></li>
+  </ul>
+<%- include('../partials/footer'); %>

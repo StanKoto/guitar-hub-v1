@@ -1,0 +1,13 @@
+<%- include('../partials/header'); %>
+  <span><%= post.title %></span>
+  <br>
+  <span><%= post.contents %></span>
+  <br>
+  <span>Author: <%= post.author.username %></span>
+  <br>
+  <% if (currentUser.role === 'admin') { %>
+    <button id="delete-post">Delete post</button>
+  <% } %>
+
+  <script src="/js/postScripts/deletePost.js"></script>
+<%- include('../partials/footer'); %>

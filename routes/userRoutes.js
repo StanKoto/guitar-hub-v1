@@ -8,7 +8,7 @@ userRouter.use(checkAuthentication, checkRole);
 
 userRouter.get('/', users_get);
 userRouter.post('/', users_post);
-userRouter.get('/:id', user_get); 
+userRouter.get('/:id/:slug', user_get); 
 userRouter.put('/:id', user_put);
 userRouter.delete('/:id', user_delete);
 
