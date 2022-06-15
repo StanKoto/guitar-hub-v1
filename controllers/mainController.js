@@ -8,6 +8,10 @@ exports.guitarTips_get = asyncHandler((req, res, next) => {
   res.render('mainViews/guitar-tips', { title: 'Guitar Tips' });
 });
 
+exports.manageUsers_get = asyncHandler((req, res, next) => {
+  res.render('mainViews/manageUsers.ejs', { title: 'User Management' });
+});
+
 exports.about_get = asyncHandler((req, res, next) => {
   res.render('mainViews/about', { title: 'About' });
 });

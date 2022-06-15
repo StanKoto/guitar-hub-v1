@@ -1,0 +1,42 @@
+<%- include('../partials/header'); %>
+  <form id="details-form">
+    <p>Current username: <%= user.username %></p>
+    <label for="username">Change username to:</label>
+    <input type="text" name="username">
+    <div class="username error"></div>
+    <p>Current email: <%= user.email %></p>
+    <label for="email">Change email to:</label>
+    <input type="text" name="email">
+    <div class="email error"></div>
+    <p>Change role (current role: <%= user.role %>):</p>
+    <% if (user.role === 'user') { %>
+      <div>
+        <input type="radio" id="user" name="role" value="user" checked>
+        <label for="user">User</label>
+        <input type="radio" id="admin" name="role" value="admin">
+        <label for="admin">Admin</label>
+      </div>
+    <% } else { %>
+      <div>
+        <input type="radio" id="user" name="role" value="user">
+        <label for="user">User</label>
+        <input type="radio" id="admin" name="role" value="admin" checked>
+        <label for="admin">Admin</label>
+      </div>
+    <% } %>
+    <button>Update user details</button>
+  </form>
+
+  <form id="password-form">
+    <p>Change user password:</p>
+    <label for="adminPassword">Please enter your password:</label>
+    <input type="password" name="adminPassword" required>
+    <div class="match password error"></div>
+    <label for="newPassword">Please enter new user password:</label>
+    <input type="password" name="newPassword" required>
+    <div class="validate password error"></div>
+    <button>Update user password</button>
+  </form>
+
+  <script src="/js/userScripts/updateUser.js"></script>
+<%- include('../partials/footer'); %>

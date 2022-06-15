@@ -6,6 +6,7 @@
     <li>Role: <%= user.role %></li>
   </ul>
   <br>
+  <a href="/users/<%= user._id %>/<%= user.slug %>/update-user">Update user</a>
   <button id="delete-user">Delete user</button>
 
   <script src="/js/userScripts/deleteUser.js"></script>

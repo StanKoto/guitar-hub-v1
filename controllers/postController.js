@@ -5,7 +5,11 @@ const { ErrorResponse } = require('../utils/error-handling');
 
 exports.posts_get = asyncHandler(async (req, res, next) => {
   const posts = await Post.find().populate('author');
-  res.render('postViews/posts', { posts, title: 'Posts' });
+  res.render('postViews/getPosts', { title: 'Posts', posts });
+});
+
+exports.createPost_get = asyncHandler((req, res, next) => {
+  res.render('postViews/createPost', { title: 'Create new post' });
 });
 
 exports.posts_post = asyncHandler(async (req, res, next) => {
@@ -14,21 +18,18 @@ exports.posts_post = asyncHandler(async (req, res, next) => {
   res.json({ post });
 });
 
-exports.createPost_get = asyncHandler((req, res, next) => {
-  res.render('postViews/createPost', { title: 'Create a post' });
+exports.post_get = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const post = await Post.findById(id).populate('author');
+  if (!post) throw new ErrorResponse(`No post found with ID of ${id}`, 404)
+  res.render('postViews/getPost', { title: post.title, post });
 });
 
 exports.updatePost_get = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const post = await Post.findById(id);
-  res.render('postViews/updatePost', { title: post.title, contents: post.contents });
-});
-
-exports.post_get = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-  const post = await Post.findById(id).populate('author');
   if (!post) throw new ErrorResponse(`No post found with ID of ${id}`, 404)
-  res.render('postViews/post', { post, title: post.title });
+  res.render('postViews/updatePost', { title: post.title, contents: post.contents });
 });
 
 exports.post_put = asyncHandler(async (req, res, next) => {
