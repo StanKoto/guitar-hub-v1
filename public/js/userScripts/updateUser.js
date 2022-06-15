@@ -6,6 +6,8 @@ const emailError = document.querySelector('.email.error');
 const matchPasswordError = document.querySelector('.match.password.error');
 const validatePasswordError = document.querySelector('.validate.password.error');
 
+const userId = window.location.pathname.split('/')[2];
+
 detailsForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -18,9 +20,10 @@ detailsForm.addEventListener('submit', async (e) => {
   if (username.length !== 0) body.username = username
   const email = detailsForm.email.value;
   if (email.length !== 0) body.email = email
+  body.role = detailsForm.role.value;
 
   try {
-    const res = await fetch('/auth/update-details', {
+    const res = await fetch(`/users/${ userId }/update-details`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -32,7 +35,8 @@ detailsForm.addEventListener('submit', async (e) => {
       usernameError.textContent = data.errors.username;
       emailError.textContent = data.errors.email;
     } else {
-      location.assign('/auth/update-details');
+      if (data.selfUpdate && data.user.role === 'user') return location.assign('/auth/update-details')
+      location.assign(`/users/${data.user._id}/${data.user.slug}`);
     }
   } catch (err) {
     location.assign('/server-error');
@@ -45,14 +49,14 @@ passwordForm.addEventListener('submit', async (e) => {
   matchPasswordError.textContent = '';
   validatePasswordError.textContent = '';
 
-  const currentPassword = passwordForm.currentPassword.value;
+  const adminPassword = passwordForm.adminPassword.value;
   const newPassword = passwordForm.newPassword.value;
 
   try {
-    const res = await fetch('/auth/update-password', {
+    const res = await fetch(`/users/${userId}/update-password`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ currentPassword, newPassword })
+      body: JSON.stringify({ adminPassword, newPassword })
     });
 
     const data = await res.json();
@@ -61,7 +65,7 @@ passwordForm.addEventListener('submit', async (e) => {
       matchPasswordError.textContent = data.errors.credentials;
       validatePasswordError.textContent = data.errors.password;
     } else {
-      location.assign('/auth/update-details');
+      location.assign(`/users/${data.user._id}/${data.user.slug}`);
     }
   } catch (err) {
     location.assign('/server-error');

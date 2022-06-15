@@ -2,7 +2,7 @@ const { User } = require('../models/User');
 const { asyncHandler } = require('../utils/asyncHandler');
 const { ErrorResponse } = require('../utils/error-handling');
 
-const regenerateSession = (req, user, status) => {
+const regenerateSession = (req, res, user, status) => {
   req.session.regenerate(err => {
     if (err) throw err
     req.session.user = user._id;
@@ -27,7 +27,7 @@ exports.login_post = asyncHandler(async (req, res, next) => {
   if (!user) throw new Error('Invalid credentials');
   const isMatch = await user.matchPassword(password);
   if (!isMatch) throw new Error('Invalid credentials');
-  regenerateSession(req, user, 200);
+  regenerateSession(req, res, user, 200);
 });
 
 exports.logout_get = asyncHandler((req, res, next) => {
@@ -47,13 +47,13 @@ exports.signup_get = asyncHandler((req, res, next) => {
 
 exports.signup_post = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body);
-  regenerateSession(req, user, 201);
+  regenerateSession(req, res, user, 201);
 });
 
 exports.update_get = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user._id);
   if (!user) throw new ErrorResponse(`No user found with id of ${req.user._id}`, 404);
-  res.render('authViews/updateDetails', { title: 'Update details', user });
+  res.render('authViews/updateDetails', { title: 'Update my details', user });
 });
 
 exports.updateDetails_put = asyncHandler(async (req, res, next) => {
@@ -65,8 +65,8 @@ exports.updateDetails_put = asyncHandler(async (req, res, next) => {
     runValidators: true,
     new: true
   });
-  if (!user) throw new ErrorResponse(`No user find with id of ${req.user._id}`, 404)
-  regenerateSession(req, user, 200);
+  if (!user) throw new ErrorResponse(`No user found with id of ${req.user._id}`, 404)
+  regenerateSession(req, res, user, 200);
 });
 
 exports.updatePassword_put = asyncHandler(async (req, res, next) => {
@@ -76,5 +76,5 @@ exports.updatePassword_put = asyncHandler(async (req, res, next) => {
   if (!isMatch) throw new Error('Invalid password')
   user.password = req.body.newPassword;
   await user.save();
-  regenerateSession(req, user, 200);
+  regenerateSession(req, res, user, 200);
 });

@@ -26,7 +26,7 @@ handleErrors = (err, req, res, next) => {
   }
   
   if (err.message === 'Invalid password') {
-    errors.credentials = 'Incorrect current password, please try again';
+    errors.credentials = 'Incorrect password, please try again';
     return res.status(400).json({ errors });
   }
 
