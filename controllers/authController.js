@@ -46,7 +46,8 @@ exports.signup_get = asyncHandler((req, res, next) => {
 });
 
 exports.signup_post = asyncHandler(async (req, res, next) => {
-  const user = await User.create(req.body);
+  const dataToInsert = { username: req.body.username, email: req.body.email, password: req.body.password };
+  const user = await User.create(dataToInsert);
   regenerateSession(req, res, user, 201);
 });
 

@@ -13,9 +13,9 @@ exports.createPost_get = asyncHandler((req, res, next) => {
 });
 
 exports.posts_post = asyncHandler(async (req, res, next) => {
-  req.body.author = req.user._id;
-  const post = await Post.create(req.body);
-  res.json({ post });
+  const dataToInsert = { title: req.body.title, contents: req.body.contents, author: req.user._id }
+  const post = await Post.create(dataToInsert);
+  res.status(201).json({ post });
 });
 
 exports.post_get = asyncHandler(async (req, res, next) => {
@@ -39,12 +39,13 @@ exports.post_put = asyncHandler(async (req, res, next) => {
   if (!post.author.equals(req.user._id) && req.user.role === 'user') {
     throw new ErrorResponse('You are not authorized to alter this resource!', 401);
   }
-  req.body.slug = slugify(req.body.title, { lower: true });
-  post = await Post.findByIdAndUpdate(id, req.body, {
+  const fieldsToUpdate = { title: req.body.title, contents: req.body.contents };
+  if (req.body.title) fieldsToUpdate.slug = slugify(req.body.title, { lower: true })
+  post = await Post.findByIdAndUpdate(id, fieldsToUpdate, {
     runValidators: true,
     new: true
   });
-  res.json({ post });
+  res.status(200).json({ post });
 });
 
 exports.post_delete = asyncHandler(async (req, res, next) => {
@@ -55,5 +56,5 @@ exports.post_delete = asyncHandler(async (req, res, next) => {
     throw new ErrorResponse('You are not authorized to delete this resource!', 401);
   }
   post = await Post.findByIdAndDelete(id);
-  res.json({ post });
+  res.status(200).json({ post });
 });

@@ -9,14 +9,18 @@ form.addEventListener('submit', async (e) => {
   contentsError.textContent = '';
 
   const postId = window.location.pathname.split('/')[2];
+
+  const body = {};
   const title = form.title.value;
+  if (title.length !== 0) body.title = title;
   const contents = form.contents.value;
+  if (contents.length !== 0) body.contents = contents;
 
   try {
     const res = await fetch(`/posts/${postId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, contents })
+      body: JSON.stringify(body)
     });
 
     const data = await res.json();
