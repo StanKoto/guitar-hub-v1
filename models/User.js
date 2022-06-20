@@ -34,7 +34,9 @@ const userSchema = new mongoose.Schema({
     default: 'user'
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
 userSchema.pre('save', async function () {
@@ -43,8 +45,19 @@ userSchema.pre('save', async function () {
     this.slug = slugify(this.username, { lower: true });
 });
 
+userSchema.pre('remove', async function () {
+  await this.model('Post').updateMany({ author: this._id }, { author: null });
+});
+
 userSchema.methods.matchPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
+
+userSchema.virtual('posts', {
+  ref: 'Post',
+  localField: '_id',
+  foreignField: 'author',
+  justOne: false
+});
 
 exports.User = mongoose.model('user', userSchema);

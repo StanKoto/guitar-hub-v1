@@ -1,6 +1,6 @@
 <%- include('../partials/header'); %>
   <ul>
-    <% for (post of posts) { %>
+    <% for (post of posts.results) { %>
       <li>
         <a href="/posts/<%= post._id %>/<%= post.slug %>"><%= post.title %></a>
         <br>

@@ -1,12 +1,14 @@
 const express = require('express');
+const { User } = require('../models/User');
 const { checkAuthentication, checkRole } = require('../utils/auth');
+const { searchResults } = require('../utils/searchResults');
 const { users_get, createUser_get, users_post, user_get, updateUser_get, userDetails_put, userPassword_put, user_delete } = require('../controllers/userController');
 
 const userRouter = express.Router();
 
 userRouter.use(checkAuthentication, checkRole);
 
-userRouter.get('/', users_get);
+userRouter.get('/', searchResults(User, 'posts'), users_get);
 userRouter.get('/create-user', createUser_get);
 userRouter.post('/', users_post);
 userRouter.get('/:id/:slug', user_get);

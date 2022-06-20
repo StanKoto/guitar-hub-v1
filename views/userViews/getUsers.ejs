@@ -2,7 +2,7 @@
   <h1>Here you can manage the users on the guitar wiki portal</h1>
   <br>
   <ol>
-    <% for (user of users) { %>
+    <% for (user of users.results) { %>
       <li>
         <a href="/users/<%= user._id %>/<%= user.slug %>"><%= user.username %></a>
       </li>

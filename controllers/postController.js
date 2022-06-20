@@ -4,8 +4,7 @@ const { asyncHandler } = require('../utils/asyncHandler');
 const { ErrorResponse } = require('../utils/error-handling');
 
 exports.posts_get = asyncHandler(async (req, res, next) => {
-  const posts = await Post.find().populate('author');
-  res.render('postViews/getPosts', { title: 'Posts', posts });
+  res.render('postViews/getPosts', { title: 'Posts', posts: res.searchResults });
 });
 
 exports.createPost_get = asyncHandler((req, res, next) => {
@@ -36,7 +35,7 @@ exports.post_put = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   let post = await Post.findById(id);
   if (!post) throw new ErrorResponse(`No post found with ID of ${id}`, 404)
-  if (!post.author.equals(req.user._id) && req.user.role === 'user') {
+  if ((!post.author || post.author && !post.author.equals(req.user._id)) && req.user.role === 'user') {
     throw new ErrorResponse('You are not authorized to alter this resource!', 401);
   }
   const fieldsToUpdate = { title: req.body.title, contents: req.body.contents };
@@ -52,9 +51,9 @@ exports.post_delete = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   let post = await Post.findById(id);
   if (!post) throw new ErrorResponse(`No post found with ID of ${id}`, 404)
-  if (!post.author.equals(req.user._id) && req.user.role === 'user') { 
+  if ((!post.author || post.author && !post.author.equals(req.user._id)) && req.user.role === 'user') { 
     throw new ErrorResponse('You are not authorized to delete this resource!', 401);
   }
-  post = await Post.findByIdAndDelete(id);
-  res.status(200).json({ post });
+  await post.remove();
+  res.status(200).json({ success: true });
 });
