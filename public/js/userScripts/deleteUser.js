@@ -11,7 +11,7 @@ document.getElementById('delete-user').addEventListener('click', async (e) => {
 
     const data = await res.json();
     
-    if (data.user) location.assign('/users')
+    if (data.success) location.assign('/users')
   } catch (err) {
     location.assign('/server-error');
   }

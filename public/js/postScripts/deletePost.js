@@ -11,7 +11,7 @@ document.getElementById('delete-post').addEventListener('click', async (e) => {
 
     const data = await res.json();
 
-    if (data.post) location.assign('/posts')
+    if (data.success) location.assign('/posts')
   } catch (err) {
     location.assign('/server-error');
   }

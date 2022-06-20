@@ -15,8 +15,7 @@ const regenerateSession = (req, res, user) => {
 };
 
 exports.users_get = asyncHandler(async (req, res, next) => {
-  const users = await User.find();
-  res.render('userViews/getUsers', { title: 'Users', users });
+  res.render('userViews/getUsers', { title: 'Users', users: res.searchResults });
 });
 
 exports.createUser_get = asyncHandler((req, res, next) => {
@@ -73,7 +72,8 @@ exports.userPassword_put = asyncHandler(async (req, res, next) => {
 
 exports.user_delete = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
-  const user = await User.findByIdAndDelete(id);
+  const user = await User.findById(id);
   if (!user) throw new ErrorResponse(`No user found with ID of ${id}`, 404)
-  res.status(200).json({ user });
+  await user.remove();
+  res.status(200).json({ success: true });
 });
