@@ -6,6 +6,8 @@
     <li>Role: <%= user.role %></li>
   </ul>
   <br>
+  <a href="/ratings?reviewer=<%= user._id %>">View all given ratings</a>
+  <br>
   <a href="/users/<%= user._id %>/<%= user.slug %>/update-user">Update user</a>
   <button id="delete-user">Delete user</button>
 

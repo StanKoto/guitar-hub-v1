@@ -7,10 +7,36 @@
     <span>Author: <%= post.author.username %></span>
     <br>
   <% } %>
+  <div>
+    <span>Average rating: <%= post.averageRating %></span>
+    <% if (currentUser) { %>
+      <a href="/ratings?post=<%= post._id %>">View all received ratings</a>
+      <% } %>
+  </div>
+  <br>
+  <% if (currentUser && (!post.author || post.author && !post.author._id.equals(currentUser._id))) { %>
+    <p>Rate this post:</p>
+    <form>
+      <input type="radio" id="one" name="rating" value="1">
+      <label for="one">1 (useless)</label>
+      <input type="radio" id="two" name="rating" value="2">
+      <label for="two">2 (rather useless)</label>
+      <input type="radio" id="three" name="rating" value="3">
+      <label for="three">3 (somewhat helpful)</label>
+      <input type="radio" id="four" name="rating" value="4">
+      <label for="four">4 (rather helpful)</label>
+      <input type="radio" id="five" name="rating" value="5">
+      <label for="five">5 (very helpful)</label>
+      <button>Submit your vote</button>
+    </form>
+    <div class="rating error"></div>
+    <br>
+  <% } %>
   <% if (currentUser && (currentUser.role === 'admin' || (post.author && post.author._id.equals(currentUser._id)))) { %>
     <a href="/posts/<%= post._id %>/<%= post.slug %>/update-post">Update post</a>
     <button id="delete-post">Delete post</button>
   <% } %>
 
+  <script src="/js/postScripts/ratePost.js"></script>
   <script src="/js/postScripts/deletePost.js"></script>
 <%- include('../partials/footer'); %>

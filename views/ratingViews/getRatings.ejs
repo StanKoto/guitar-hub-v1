@@ -1,0 +1,9 @@
+<%- include('../partials/header'); %>
+  <ul>
+    <% for (rating of ratings.results) { %>
+      <li>Stars: <%= rating.stars %></li>
+      <li>Post: <%= rating.post.title %></li>
+      <li>Reviewer: <%= rating.reviewer.username %></li>
+    <% } %>
+  </ul>  
+<%- include('../partials/footer'); %>

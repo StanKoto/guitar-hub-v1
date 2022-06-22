@@ -6,10 +6,14 @@ class ErrorResponse extends Error {
 }
 
 handleErrors = (err, req, res, next) => {
-  let errors = { username: '', email: '', password: '', credentials: '', title: '', contents: '' };
+  let errors = { username: '', email: '', password: '', title: '', contents: '', rating: '', credentials: '' };
 
   if (err.code === 11000) {
-    errors[Object.keys(err.keyValue)[0]] = `That ${Object.keys(err.keyValue)[0]} is already registered`;
+    if ('post' in err.keyValue && 'reviewer' in err.keyValue) {
+      errors.rating = 'You have already rated this post';
+    } else {
+      errors[Object.keys(err.keyValue)[0]] = `That ${Object.keys(err.keyValue)[0]} is already registered`;
+    }
     return res.status(400).json({ errors });
   }
 
@@ -19,6 +23,8 @@ handleErrors = (err, req, res, next) => {
     }
     return res.status(400).json({ errors });
   }
+  
+  if (err.name === 'CastError') err = new ErrorResponse(`Resource not found with ID of ${err.value}`, 404)
 
   if (err.message === 'Invalid credentials') {
     errors.credentials = 'Invalid credentials, please check your email and password and try again';
@@ -30,7 +36,10 @@ handleErrors = (err, req, res, next) => {
     return res.status(400).json({ errors });
   }
 
-  if (err.name === 'CastError') err = new ErrorResponse(`Resource not found with ID of ${err.value}`, 404)
+  if (err.message === 'Own post rated') {
+    errors.ownPost = 'You cannot rate your own posts';
+    return res.status(401).json({ errors });
+  }
 
   if (err.statusCode) return res.status(err.statusCode).render(`errorViews/${err.statusCode.toString()}`, { title: err.statusCode.toString(), message: err.message })
 
