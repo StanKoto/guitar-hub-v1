@@ -1,4 +1,4 @@
-exports.searchResults = (model, populate) => async (req, res, next) => {
+exports.searchResults = (model, populateOne, populateTwo) => async (req, res, next) => {
   let results;
   const query = { ...req.query };
   const excludedFields = [ 'select', 'sort', 'page', 'limit' ];
@@ -9,7 +9,8 @@ exports.searchResults = (model, populate) => async (req, res, next) => {
   const adjustedQuery = JSON.parse(queryString);
   results = model.find(adjustedQuery);
   if (req.query.select) results = results.select(req.query.select.split(',').join(' '))
-  if (populate) results = results.populate(populate);
+  if (populateOne) results = results.populate(populateOne);
+  if (populateTwo) results = results.populate(populateTwo);
   if (req.query.sort) {
     results = results.sort(req.query.sort.split(',').join(' '));
   } else {
