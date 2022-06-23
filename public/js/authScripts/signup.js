@@ -27,6 +27,17 @@ form.addEventListener('submit', async (e) => {
       usernameError.textContent = data.errors.username;
       emailError.textContent = data.errors.email;
       passwordError.textContent = data.errors.password;
+    } else if (data.otherErrors) {
+      switch (res.status) {
+        case 401:
+          location.assign(`/unauthorized?message=${data.message}`);
+          break;
+        case 404:
+          location.assign(`/bad-request?message=${data.message}`);
+          break;
+        default:
+          location.assign('/server-error');
+      }
     } else {
       location.assign('/')
     }

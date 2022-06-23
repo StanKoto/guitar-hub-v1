@@ -41,10 +41,16 @@ handleErrors = (err, req, res, next) => {
     return res.status(401).json({ errors });
   }
 
-  if (err.statusCode) return res.status(err.statusCode).render(`errorViews/${err.statusCode.toString()}`, { title: err.statusCode.toString(), message: err.message })
+  if (err.statusCode) {
+    if (req.method === 'GET') {
+      return res.status(err.statusCode).render(`errorViews/${err.statusCode.toString()}`, { title: err.statusCode.toString(), message: err.message });
+    }
+    return res.status(err.statusCode).json({ otherErrors: true, message: err.message });
+  }
 
   console.error(err);
-  res.status(500).render('errorViews/500', { title: '500'});
+  if (req.method === 'GET') return res.status(500).redirect('/server-error');
+  res.status(500).json({ otherErrors: true });
 };
 
 module.exports = { ErrorResponse, handleErrors };

@@ -34,6 +34,17 @@ detailsForm.addEventListener('submit', async (e) => {
     if (data.errors) {
       usernameError.textContent = data.errors.username;
       emailError.textContent = data.errors.email;
+    } else if (data.otherErrors) {
+      switch (res.status) {
+        case 401:
+          location.assign(`/unauthorized?message=${data.message}`);
+          break;
+        case 404:
+          location.assign(`/bad-request?message=${data.message}`);
+          break;
+        default:
+          location.assign('/server-error');
+      }
     } else {
       if (data.selfUpdate && data.user.role === 'user') return location.assign('/auth/update-details')
       location.assign(`/users/${data.user._id}/${data.user.slug}`);
@@ -64,6 +75,17 @@ passwordForm.addEventListener('submit', async (e) => {
     if (data.errors) {
       matchPasswordError.textContent = data.errors.credentials;
       validatePasswordError.textContent = data.errors.password;
+    } else if (data.otherErrors) {
+      switch (res.status) {
+        case 401:
+          location.assign(`/unauthorized?message=${data.message}`);
+          break;
+        case 404:
+          location.assign(`/bad-request?message=${data.message}`);
+          break;
+        default:
+          location.assign('/server-error');
+      }
     } else {
       location.assign(`/users/${data.user._id}/${data.user.slug}`);
     }
