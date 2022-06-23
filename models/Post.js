@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const { User } = require('./User');
 
-const PostSchema = new mongoose.Schema({
+const postSchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, 'Please provide a post title'],
@@ -16,7 +15,7 @@ const PostSchema = new mongoose.Schema({
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: User
+    ref: 'User'
   },
   averageRating: {
     type: Number
@@ -26,9 +25,14 @@ const PostSchema = new mongoose.Schema({
   timestamps: true
 });
 
-PostSchema.pre('save', function (next) {
+postSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
   next();
 });
 
-exports.Post = mongoose.model('Post', PostSchema);
+postSchema.pre('remove', async function () {
+  await this.model('Rating').deleteMany({ post: this._id });
+});
+
+
+exports.Post = mongoose.model('Post', postSchema);

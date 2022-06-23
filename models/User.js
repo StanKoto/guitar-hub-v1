@@ -47,6 +47,7 @@ userSchema.pre('save', async function () {
 
 userSchema.pre('remove', async function () {
   await this.model('Post').updateMany({ author: this._id }, { author: null });
+  await this.model('Rating').updateMany({ reviewer: this._id }, { reviewer: null });
 });
 
 userSchema.methods.matchPassword = async function (password) {
@@ -60,4 +61,4 @@ userSchema.virtual('posts', {
   justOne: false
 });
 
-exports.User = mongoose.model('user', userSchema);
+exports.User = mongoose.model('User', userSchema);

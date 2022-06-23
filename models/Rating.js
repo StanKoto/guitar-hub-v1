@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const { User } = require('../models/User');
-const { Post } = require('../models/Post');
 
-const RatingSchema = new mongoose.Schema({
+const ratingSchema = new mongoose.Schema({
   rating: {
     type: Number,
     required: [true, 'Please rate the post before submitting your vote'],
@@ -10,20 +8,20 @@ const RatingSchema = new mongoose.Schema({
   },
   post: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: Post
+    ref: 'Post'
   },
   reviewer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: User
+    ref: 'User'
   }
 }, 
 {
   timestamps: true
 });
 
-RatingSchema.index({ post: 1, reviewer: 1 }, { unique: true });
+ratingSchema.index({ post: 1, reviewer: 1 }, { unique: true });
 
-RatingSchema.statics.getAverageRating = async function(postId) {
+ratingSchema.statics.getAverageRating = async function(postId) {
   const aggregationResults = await this.aggregate([
     {
       $match: { post: postId }
@@ -38,19 +36,19 @@ RatingSchema.statics.getAverageRating = async function(postId) {
 
   try {
     await this.model('Post').findByIdAndUpdate(postId, {
-      averageRating: aggregationResults[0].averageRating
+      averageRating: aggregationResults[0].averageRating.toFixed(1)
     });
   } catch {
     console.error(err);
   }
 };
 
-RatingSchema.post('save', function () {
+ratingSchema.post('save', function () {
   this.constructor.getAverageRating(this.post);
 });
 
-RatingSchema.pre('remove', function () {
+ratingSchema.pre('remove', function () {
   this.constructor.getAverageRating(this.post);
 });
 
-exports.Rating = mongoose.model('rating', RatingSchema);
+exports.Rating = mongoose.model('Rating', ratingSchema);
