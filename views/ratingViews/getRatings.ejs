@@ -1,9 +1,13 @@
 <%- include('../partials/header'); %>
   <ul>
     <% for (rating of ratings.results) { %>
-      <li>Stars: <%= rating.stars %></li>
+      <li>Rating: <%= rating.rating %></li>
       <li>Post: <%= rating.post.title %></li>
-      <li>Reviewer: <%= rating.reviewer.username %></li>
+      <% if (rating.reviewer) { %>
+        <li>Reviewer: <%= rating.reviewer.username %></li>
+      <% } else { %>
+        <li>Reviewer: Deleted user</li>
+      <% } %>
     <% } %>
   </ul>  
 <%- include('../partials/footer'); %>
