@@ -17,9 +17,13 @@ exports.about_get = asyncHandler((req, res, next) => {
 });
 
 exports.serverError_get = asyncHandler((req, res, next) => {
-  res.render('errorViews/500', { title: '500' });
+  res.status(500).render('errorViews/500', { title: '500' });
+})
+
+exports.unauthorized_get = asyncHandler((req, res, next) => {
+  res.status(401).render('errorViews/401', { title: '401', message: req.query.message });
 })
 
 exports.badRequest_get = asyncHandler((req, res, next) => {
-  res.render('errorViews/404', { title: '404', message: 'Oops! It seems the page you wanted to reach does not exist!' });
+  res.status(404).render('errorViews/404', { title: '404', message: req.query.message || 'Oops! It seems the page you wanted to reach does not exist!' });
 });
