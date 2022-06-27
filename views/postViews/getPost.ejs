@@ -3,6 +3,13 @@
   <br>
   <span><%= post.contents %></span>
   <br>
+  <% if (post.images.length !== 0) { %>
+    <div>
+      <% for (const image of post.images) { %>
+        <img src="data:image/png;base64,<%= image.toString('base64') %>" alt="Post image">
+      <% } %>
+    </div>
+  <% } %>
   <% if (post.author) { %>
     <span>Author: <%= post.author.username %></span>
     <br>
