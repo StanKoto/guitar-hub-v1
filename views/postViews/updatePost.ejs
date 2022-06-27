@@ -1,13 +1,29 @@
 <%- include('../partials/header'); %>
-  <form>
+  <form id="contents-form">
     <label for="title">Title</label>
     <textarea name="title" cols="30" rows="1" maxlength="50"><%= title %></textarea>
     <div class="title error"></div>
     <label for="contents">Contents</label>
     <textarea name="contents" cols="30" rows="10" maxlength="5000"><%= contents %></textarea>
     <div class="contents error"></div>
-    <button>Update post</button>
+    <button>Update text contents</button>
   </form>
-
+  <br>
+  <form id="image-form">
+    <label for="images">Add new images</label>
+    <input type="file" id="images" multiple>
+    <div class="image error"></div>
+    <button>Upload images</button>
+  </form>
+  <br>
+  <% if (images.length !== 0) { %>
+    <% for (const image of images) { %>
+      <div>
+        <img src="data:image/png;base64,<%= image.toString('base64') %>" alt="Post image">
+        <button class="delete image" id="<%= images.indexOf(image) %>">Delete image</button>
+      </div>
+    <% } %>
+    <br>
+  <% } %>
   <script src="/js/postScripts/updatePost.js"></script>
 <%- include('../partials/footer'); %>

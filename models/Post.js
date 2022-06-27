@@ -13,6 +13,11 @@ const postSchema = new mongoose.Schema({
     required: [true, 'Please enter some post contents'],
     maxLength: [5000, 'Maximum contents length is 5000 characters']
   },
+  images: {
+    type: [Buffer],
+    select: false,
+    validate: [arrayLimit, 'The number of {PATH} attached to the post would exceeed the limit of 10, please select less images or delete some of the already attached ones']
+  },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
@@ -24,6 +29,10 @@ const postSchema = new mongoose.Schema({
 {
   timestamps: true
 });
+
+function arrayLimit(val) {
+  return val.length <= 10;
+};
 
 postSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
