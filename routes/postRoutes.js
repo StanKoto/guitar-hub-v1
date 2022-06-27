@@ -7,7 +7,7 @@ const { posts_get, createPost_get, posts_post, post_get, postImages_post, postIm
 
 const upload = multer({
   limits: {
-    fileSize: process.env.MAX_IMAGE_SIZE
+    fileSize: 2000000
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|png)$/)) {
