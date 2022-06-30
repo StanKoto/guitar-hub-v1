@@ -1,4 +1,4 @@
-const { asyncHandler } = require('../utils/asyncHandler');
+const { asyncHandler } = require('../utils/helperFunctions');
 
 exports.index_get = asyncHandler((req, res, next) => {
   res.render('mainViews/index', { title: 'Guitar Wiki' });
@@ -9,7 +9,7 @@ exports.guitarTips_get = asyncHandler((req, res, next) => {
 });
 
 exports.manageUsers_get = asyncHandler((req, res, next) => {
-  res.render('mainViews/manageUsers.ejs', { title: 'User Management' });
+  res.render('mainViews/manageUsers', { title: 'User Management' });
 });
 
 exports.about_get = asyncHandler((req, res, next) => {

@@ -1,6 +1,6 @@
+const { asyncHandler } = require('../utils/helperFunctions');
 const { User } = require('../models/User');
-const { asyncHandler } = require('../utils/asyncHandler');
-const { ErrorResponse } = require('../utils/error-handling');
+const { ErrorResponse } = require('../utils/errorHandling');
 
 exports.checkAuthentication = asyncHandler(async (req, res, next) => {
   if (req.session.user) {
@@ -16,6 +16,7 @@ exports.checkRole = asyncHandler((req, res, next) => {
 exports.checkUser = asyncHandler(async (req, res, next) => {
   if (req.session.user) {
     const user = await User.findById(req.session.user);
+    if (!user) throw new ErrorResponse(`No user found with ID of ${req.session.user}`)
     req.user = user;
     res.locals.currentUser = user;
     return next();

@@ -1,7 +1,7 @@
 const express = require('express');
+const { checkAuthentication } = require('../middleware/auth');
+const { searchResults } = require('../middleware/searchResults');
 const { Rating } = require('../models/Rating');
-const { searchResults } = require('../utils/searchResults');
-const { checkAuthentication } = require('../utils/auth');
 const { ratings_get, ratings_post } = require('../controllers/ratingController');
 
 const ratingRouter = express.Router();

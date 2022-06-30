@@ -34,9 +34,39 @@ function arrayLimit(val) {
   return val.length <= 10;
 };
 
+postSchema.statics.getPostCount = async function (authorId) {
+  const aggregationResults = await this.aggregate([
+    {
+      $match: { author: authorId }
+    },
+    {
+      $group: {
+        _id: null,
+        postCount: {$count: { }}
+      }
+    }
+  ]);
+
+  const postCount = aggregationResults.length !== 0 ? aggregationResults[0].postCount : 0;
+
+  try {
+    await this.model('User').findByIdAndUpdate(authorId, { postCount });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 postSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
   next();
+});
+
+postSchema.post('save', function () {
+  this.constructor.getPostCount(this.author);
+});
+
+postSchema.post('remove', function () {
+  this.constructor.getPostCount(this.author);
 });
 
 postSchema.pre('remove', async function () {

@@ -1,14 +1,16 @@
 <%- include('../partials/header'); %>
   <form id="details-form">
-    <p>Current username: <%= user.username %></p>
+    <span>Current username: <%= user.username %></span>
+    <br>
     <label for="username">Change username to:</label>
     <input type="text" name="username">
     <div class="username error"></div>
-    <p>Current email: <%= user.email %></p>
+    <span>Current email: <%= user.email %></span>
+    <br>
     <label for="email">Change email to:</label>
     <input type="text" name="email">
     <div class="email error"></div>
-    <p>Change role (current role: <%= user.role %>):</p>
+    <span>Change role (current role: <%= user.role %>):</span>
     <% if (user.role === 'user') { %>
       <div>
         <input type="radio" id="user" name="role" value="user" checked>
@@ -26,9 +28,10 @@
     <% } %>
     <button>Update user details</button>
   </form>
-
+  <br>
   <form id="password-form">
-    <p>Change user password:</p>
+    <span>Change user password:</span>
+    <br>
     <label for="adminPassword">Please enter your password:</label>
     <input type="password" name="adminPassword" required>
     <div class="match password error"></div>

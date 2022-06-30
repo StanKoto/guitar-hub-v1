@@ -1,7 +1,6 @@
 const { Rating } = require('../models/Rating');
 const { Post } = require('../models/Post');
-const { asyncHandler } = require('../utils/asyncHandler');
-const { ErrorResponse } = require('../utils/error-handling');
+const { asyncHandler, checkStatus, checkResource } = require('../utils/helperFunctions');
 
 exports.ratings_get = asyncHandler(async (req, res, next) => {
   if (req.query.post) {
@@ -14,12 +13,10 @@ exports.ratings_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.ratings_post = asyncHandler(async (req, res, next) => {
-  const { postId } = req.params;
-  const post = await Post.findById(postId);
-  if (!post) throw new ErrorResponse(`No post found with id of ${postId}`, 404);
+  const post = await checkResource(req, Post);
   if (post.author && post.author.equals(req.user._id)) throw new Error('Own post rated')
-  const dataToInsert = { rating: req.body.rating, post: postId, reviewer: req.user._id };
-  const rating = new Rating(dataToInsert);
+  const rating = new Rating({ rating: req.body.rating, post: post._id, reviewer: req.user._id });
   await rating.save();
+  await checkStatus(req);
   res.status(201).json({ success: true });
 });
