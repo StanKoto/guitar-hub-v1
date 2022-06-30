@@ -15,7 +15,6 @@ detailsForm.addEventListener('submit', async (e) => {
   emailError.textContent = '';
 
   const body = {};
-
   const username = detailsForm.username.value;
   if (username.length !== 0) body.username = username
   const email = detailsForm.email.value;
@@ -46,7 +45,7 @@ detailsForm.addEventListener('submit', async (e) => {
           location.assign('/server-error');
       }
     } else {
-      if (data.selfUpdate && data.user.role === 'user') return location.assign('/auth/update-details')
+      if (data.selfUpdate && data.user.role === 'user') return location.assign('/auth/update')
       location.assign(`/users/${data.user._id}/${data.user.slug}`);
     }
   } catch (err) {

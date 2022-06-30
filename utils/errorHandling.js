@@ -5,7 +5,7 @@ class ErrorResponse extends Error {
   }
 }
 
-handleErrors = (err, req, res, next) => {
+const handleErrors = (err, req, res, next) => {
   let errors = { username: '', email: '', password: '', title: '', contents: '', images: '', rating: '', credentials: '' };
 
   if (err.code === 11000) {

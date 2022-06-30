@@ -34,11 +34,11 @@ ratingSchema.statics.getAverageRating = async function(postId) {
     }
   ]);
 
+  const averageRating = aggregationResults.length !== 0 ? aggregationResults[0].averageRating.toFixed(1) : 0;
+
   try {
-    await this.model('Post').findByIdAndUpdate(postId, {
-      averageRating: aggregationResults[0].averageRating.toFixed(1)
-    });
-  } catch {
+    await this.model('Post').findByIdAndUpdate(postId, { averageRating });
+  } catch (err) {
     console.error(err);
   }
 };
@@ -47,7 +47,7 @@ ratingSchema.post('save', function () {
   this.constructor.getAverageRating(this.post);
 });
 
-ratingSchema.pre('remove', function () {
+ratingSchema.post('remove', function () {
   this.constructor.getAverageRating(this.post);
 });
 

@@ -15,8 +15,8 @@ const userRouter = require('./routes/userRoutes');
 const postRouter = require('./routes/postRoutes');
 const ratingRouter = require('./routes/ratingRoutes');
 const authRouter = require('./routes/authRoutes');
-const { handleErrors } = require('./utils/error-handling');
-const { checkUser } = require('./utils/auth');
+const { handleErrors } = require('./utils/errorHandling');
+const { checkUser } = require('./middleware/auth');
 
 dotenv.config({ path: path.join(__dirname, 'config.env') });
 

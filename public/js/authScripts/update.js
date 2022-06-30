@@ -12,8 +12,7 @@ detailsForm.addEventListener('submit', async (e) => {
   usernameError.textContent = '';
   emailError.textContent = '';
 
-  const body = {};
-
+  const body = {}
   const username = detailsForm.username.value;
   if (username.length !== 0) body.username = username
   const email = detailsForm.email.value;
@@ -43,7 +42,7 @@ detailsForm.addEventListener('submit', async (e) => {
           location.assign('/server-error');
       }
     } else {
-      location.assign('/auth/update-details');
+      location.assign('/auth/update');
     }
   } catch (err) {
     location.assign('/server-error');
@@ -83,7 +82,7 @@ passwordForm.addEventListener('submit', async (e) => {
           location.assign('/server-error');
       }
     } else {
-      location.assign('/auth/update-details');
+      location.assign('/auth/update');
     }
   } catch (err) {
     location.assign('/server-error');

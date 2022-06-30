@@ -1,7 +1,7 @@
 const express = require('express');
+const { checkAuthentication, checkRole } = require('../middleware/auth');
+const { searchResults } = require('../middleware/searchResults');
 const { User } = require('../models/User');
-const { checkAuthentication, checkRole } = require('../utils/auth');
-const { searchResults } = require('../utils/searchResults');
 const { users_get, createUser_get, users_post, user_get, updateUser_get, userDetails_put, userPassword_put, user_delete } = require('../controllers/userController');
 
 const userRouter = express.Router();

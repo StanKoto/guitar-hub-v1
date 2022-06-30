@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     minlength: [6, 'Minimum password length is 6 characters'],
     select: false
   },
+  postCount: {
+    type: Number,
+    default: 0
+  },
   status: {
     type: String,
     enum: ['active', 'passive'],
