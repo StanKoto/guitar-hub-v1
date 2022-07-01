@@ -28,7 +28,7 @@ const handleErrors = (err, req, res, next) => {
 
   if (err.statusCode) {
     if (req.method === 'GET') {
-      return res.status(err.statusCode).render(`errorViews/${err.statusCode.toString()}`, { title: err.statusCode.toString(), message: err.message });
+      return res.status(err.statusCode).render('errorViews/userError', { title: err.statusCode.toString(), message: err.message });
     }
     return res.status(err.statusCode).json({ otherErrors: true, message: err.message });
   }

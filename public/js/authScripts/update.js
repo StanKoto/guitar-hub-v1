@@ -1,90 +1,46 @@
+import { emptyErrors, makeRequest } from '../modules/helpers.js';
+
 const detailsForm = document.getElementById('details-form');
 const passwordForm = document.getElementById('password-form');
 
-const usernameError = document.querySelector('.username.error');
-const emailError = document.querySelector('.email.error');
-const matchPasswordError = document.querySelector('.match.password.error');
-const validatePasswordError = document.querySelector('.validate.password.error');
+const usernameError = { element: document.querySelector('.username.error'), errorType: 'username' };
+const emailError = { element: document.querySelector('.email.error'), errorType: 'email' };
+const matchPasswordError = { element: document.querySelector('.match.password.error'), errorType: 'credentials' };
+const validatePasswordError = { element: document.querySelector('.validate.password.error'), errorType: 'password' };
+
+const customDetailsErrors = [ usernameError, emailError ];
+const customPasswordErrors = [ matchPasswordError, validatePasswordError ];
+
+const method = 'PUT';
+const redirectUrl = '/auth/update';
 
 detailsForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  usernameError.textContent = '';
-  emailError.textContent = '';
-
-  const body = {}
+  emptyErrors(customDetailsErrors);
+  
   const username = detailsForm.username.value;
-  if (username.length !== 0) body.username = username
   const email = detailsForm.email.value;
+
+  const url = '/auth/update-details';
+  let body = {};
+  if (username.length !== 0) body.username = username
   if (email.length !== 0) body.email = email
+  body = JSON.stringify(body);
 
-  try {
-    const res = await fetch('/auth/update-details', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-
-    const data = await res.json();
-
-    if (data.errors) {
-      usernameError.textContent = data.errors.username;
-      emailError.textContent = data.errors.email;
-    } else if (data.otherErrors) {
-      switch (res.status) {
-        case 401:
-          location.assign(`/unauthorized?message=${data.message}`);
-          break;
-        case 404:
-          location.assign(`/bad-request?message=${data.message}`);
-          break;
-        default:
-          location.assign('/server-error');
-      }
-    } else {
-      location.assign('/auth/update');
-    }
-  } catch (err) {
-    location.assign('/server-error');
-  }
+  await makeRequest(url, method, redirectUrl, body, customDetailsErrors);
 });
 
 passwordForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  matchPasswordError.textContent = '';
-  validatePasswordError.textContent = '';
+  emptyErrors(customPasswordErrors);
 
   const currentPassword = passwordForm.currentPassword.value;
   const newPassword = passwordForm.newPassword.value;
 
-  try {
-    const res = await fetch('/auth/update-password', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ currentPassword, newPassword })
-    });
+  const url = '/auth/update-password';
+  const body = JSON.stringify({ currentPassword, newPassword });
 
-    const data = await res.json();
-
-    if (data.errors) {
-      matchPasswordError.textContent = data.errors.credentials;
-      validatePasswordError.textContent = data.errors.password;
-    } else if (data.otherErrors) {
-      switch (res.status) {
-        case 401:
-          location.assign(`/unauthorized?message=${data.message}`);
-          break;
-        case 404:
-          location.assign(`/bad-request?message=${data.message}`);
-          break;
-        default:
-          location.assign('/server-error');
-      }
-    } else {
-      location.assign('/auth/update');
-    }
-  } catch (err) {
-    location.assign('/server-error');
-  }
+  await makeRequest(url, method, redirectUrl, body, customPasswordErrors);
 });

@@ -1,14 +1,17 @@
+import { emptyErrors, makeRequest } from '../modules/helpers.js';
+
 const form = document.querySelector('form');
-const titleError = document.querySelector('.title.error');
-const contentsError = document.querySelector('.contents.error');
-const imageError = document.querySelector('.image.error');
+
+const titleError = { element: document.querySelector('.title.error'), errorType: 'title' };
+const contentsError = { element: document.querySelector('.contents.error'), errorType: 'contents' };
+const imageError = { element: document.querySelector('.image.error'), errorType: 'images' };
+
+const customErrors = [ titleError, contentsError, imageError ];
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  titleError.textContent = '';
-  contentsError.textContent = '';
-  imageError.textContent = '';
+  emptyErrors(customErrors);
 
   const title = form.title.value;
   const contents = form.contents.value;
@@ -21,32 +24,9 @@ form.addEventListener('submit', async (e) => {
     formData.append('images', image);
   }
 
-  try {
-    const res = await fetch('/posts', {
-      method: 'POST',
-      body: formData
-    });
-    
-    const data = await res.json();
+  const url = '/posts';
+  const method = 'POST';
+  const redirectUrl = '/posts';
 
-    if (data.errors) {
-      titleError.textContent = data.errors.title;
-      contentsError.textContent = data.errors.contents;
-    } else if (data.otherErrors) {
-      switch (res.status) {
-        case 401:
-          location.assign(`/unauthorized?message=${data.message}`);
-          break;
-        case 404:
-          location.assign(`/bad-request?message=${data.message}`);
-          break;
-        default:
-          location.assign('/server-error');
-      }
-    } else {
-      location.assign('/posts');
-    }
-  } catch (err) {
-    location.assign('/server-error');
-  }
+  await makeRequest(url, method, redirectUrl, formData, customErrors);
 });

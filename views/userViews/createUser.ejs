@@ -9,8 +9,8 @@
     <label for="password">User password</label>
     <input type="password" name="password">
     <div class="password error"></div>
-    <p>User role</p>
     <div>
+      <span>User role</span>
       <input type="radio" id="user" name="role" value="user" checked>
       <label for="user">User</label>
       <input type="radio" id="admin" name="role" value="admin">
@@ -19,5 +19,5 @@
     <button>Create new user</button>
   </form>
 
-  <script src="/js/userScripts/createUser.js"></script>
+  <script type="module" src="/js/userScripts/createUser.js"></script>
 <%- include('../partials/footer'); %>

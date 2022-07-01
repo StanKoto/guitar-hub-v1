@@ -1,40 +1,21 @@
+import { emptyErrors, makeRequest } from '../modules/helpers.js';
+
 const form = document.querySelector('form');
-const emailError = document.querySelector('.email.error');
-const credentialsError = document.querySelector('.credentials.error');
+
+const credentialsError = { element: document.querySelector('.credentials.error'), errorType: 'credentials' };
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  credentialsError.textContent = '';
+  emptyErrors([ credentialsError ]);
 
   const email = form.email.value;
   const password = form.password.value;
-  try {
-    const res = await fetch('/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
 
-    const data = await res.json();
-
-    if (data.errors) {
-      credentialsError.textContent = data.errors.credentials;
-    } else if (data.otherErrors) {
-      switch (res.status) {
-        case 401:
-          location.assign(`/unauthorized?message=${data.message}`);
-          break;
-        case 404:
-          location.assign(`/bad-request?message=${data.message}`);
-          break;
-        default:
-          location.assign('/server-error');
-      }
-    } else {
-      location.assign('/');
-    }
-  } catch (err) {
-    location.assign('/server-error');
-  }
+  const url = '/auth/login';
+  const method = 'POST';
+  const redirectUrl = '/';
+  const body = JSON.stringify({ email, password });
+  
+  await makeRequest(url, method, redirectUrl, body, [ credentialsError ]);
 });
