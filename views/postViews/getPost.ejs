@@ -3,24 +3,26 @@
   <br>
   <span><%= post.contents %></span>
   <br>
-  <% if (post.images.length !== 0) { %>
-    <div>
-      <% for (const image of post.images) { %>
-        <img src="data:image/png;base64,<%= image.toString('base64') %>" alt="Post image">
-      <% } %>
-    </div>
-  <% } %>
+  <div>
+    <% for (const image of post.images) { %>
+      <img src="data:image/png;base64,<%= image.toString('base64') %>" alt="Post image">
+    <% } %>
+  </div>
   <% if (post.author) { %>
+    <br>
     <span>Author: <%= post.author.username %></span>
     <br>
   <% } %>
-  <div>
-    <span>Average rating: <%= post.averageRating %></span>
-    <% if (currentUser) { %>
-      <a href="/ratings?post=<%= post._id %>">View all received ratings</a>
-      <% } %>
-  </div>
-  <br>
+  <% if (post.averageRating) { %>
+    <div>
+      <span>Average rating: <%= post.averageRating %></span>
+      <% if (currentUser) { %>
+        <br>
+        <a href="/ratings?post=<%= post._id %>">View all received ratings</a>
+        <% } %>
+    </div>
+    <br>
+  <% } %>
   <% if (currentUser && (!post.author || post.author && !post.author._id.equals(currentUser._id))) { %>
     <p>Rate this post:</p>
     <form>
@@ -44,6 +46,6 @@
     <button id="delete-post">Delete post</button>
   <% } %>
 
-  <script src="/js/postScripts/ratePost.js"></script>
-  <script src="/js/postScripts/deletePost.js"></script>
+  <script type="module" src="/js/postScripts/ratePost.js"></script>
+  <script type="module" src="/js/postScripts/deletePost.js"></script>
 <%- include('../partials/footer'); %>

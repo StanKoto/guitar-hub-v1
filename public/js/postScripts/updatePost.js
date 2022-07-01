@@ -1,54 +1,39 @@
-const contentsForm = document.getElementById('contents-form');
-const imageForm = document.getElementById('image-form');
-const titleError = document.querySelector('.title.error');
-const contentsError = document.querySelector('.contents.error');
-const imageError = document.querySelector('.image.error');
-const postId = window.location.pathname.split('/')[2];
+import { emptyErrors, makeRequest } from '../modules/helpers.js';
 
-contentsForm.addEventListener('submit', async (e) => {
+const contentForm = document.getElementById('contents-form');
+const imageForm = document.getElementById('image-form');
+
+const titleError = { element: document.querySelector('.title.error'), errorType: 'title' };
+const contentsError = { element: document.querySelector('.contents.error'), errorType: 'contents' };
+const imageError = { element: document.querySelector('.image.error'), errorType: 'images' };
+
+const customContentErrors = [ titleError, contentsError ];
+
+const postId = window.location.pathname.split('/')[2];
+const postSlug = window.location.pathname.split('/')[3];
+
+const imgRedirectUrl = `/posts/${postId}/${postSlug}/update-post`;
+
+contentForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  titleError.textContent = '';
-  contentsError.textContent = '';
+  emptyErrors(customContentErrors);
 
-  const title = contentsForm.title.value;
-  const contents = contentsForm.contents.value;
+  const title = contentForm.title.value;
+  const contents = contentForm.contents.value;
 
-  try {
-    const res = await fetch(`/posts/${postId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, contents })
-    });
+  const url = `/posts/${postId}`;
+  const method = 'PUT';
+  const redirectUrl = 'post';
+  const body = JSON.stringify({ title, contents });
 
-    const data = await res.json();
-
-    if (data.errors) {
-      titleError.textContent = data.errors.title;
-      contentsError.textContent = data.errors.contents;
-    } else if (data.otherErrors) {
-      switch (res.status) {
-        case 401:
-          location.assign(`/unauthorized?message=${data.message}`);
-          break;
-        case 404:
-          location.assign(`/bad-request?message=${data.message}`);
-          break;
-        default:
-          location.assign('/server-error');
-      }
-    } else {
-      location.assign(`/posts/${data.post._id}/${data.post.slug}`);
-    }
-  } catch (err) {
-    location.assign('/server-error');
-  }
+  await makeRequest(url, method, redirectUrl, body, customContentErrors);
 });
 
 imageForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  imageError.textContents = '';
+  emptyErrors([ imageError ]);
 
   const formData = new FormData();
   const images = document.getElementById('images');
@@ -56,63 +41,19 @@ imageForm.addEventListener('submit', async (e) => {
     formData.append('images', image);
   }
 
-  try {
-    const res = await fetch(`/posts/${postId}/images`, {
-      method: 'POST',
-      body: formData
-    });
+  const url = `/posts/${postId}/images`;
+  const method = 'POST';
 
-    const data = await res.json();
-
-    if (data.errors) {
-      imageError.textContent = data.errors.images;
-    } else if (data.otherErrors) {
-      switch (res.status) {
-        case 401:
-          location.assign(`/unauthorized?message=${data.message}`);
-          break;
-        case 404:
-          location.assign(`/bad-request?message=${data.message}`);
-          break;
-        default:
-          location.assign('/server-error');
-      }
-    } else {
-      location.reload();
-    }
-  } catch (err) {
-    location.assign('/server-error');
-  }
+  await makeRequest(url, method, imgRedirectUrl, formData, [ imageError ]);
 });
 
 document.querySelectorAll('.delete.image').forEach(item => {
   item.addEventListener('click', async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await fetch(`/posts/${postId}/images/${item.id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' }
-      });
+    const url = `/posts/${postId}/images/${item.id}`;
+    const method = 'DELETE';
 
-      const data = await res.json();
-
-      if (data.otherErrors) {
-        switch (res.status) {
-          case 401:
-            location.assign(`/unauthorized?message=${data.message}`);
-            break;
-          case 404:
-            location.assign(`/bad-request?message=${data.message}`);
-            break;
-          default:
-            location.assign('/server-error');
-        }
-      } else {
-        location.reload();
-      }
-    } catch (err) {
-      location.assign('/server-error');
-    }
+    await makeRequest(url, method, imgRedirectUrl);
   });
 });

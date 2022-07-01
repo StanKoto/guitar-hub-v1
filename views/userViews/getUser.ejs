@@ -2,14 +2,15 @@
   <ul>
     <li>Username: <%= user.username %></li>
     <li>Email: <%= user.email %></li>
+    <li>Posts published: <%= user.postCount %> </li>
     <li>Status: <%= user.status %></li>
     <li>Role: <%= user.role %></li>
   </ul>
   <br>
   <a href="/ratings?reviewer=<%= user._id %>">View all given ratings</a>
-  <br>
+  <br><br>
   <a href="/users/<%= user._id %>/<%= user.slug %>/update-user">Update user</a>
   <button id="delete-user">Delete user</button>
 
-  <script src="/js/userScripts/deleteUser.js"></script>
+  <script type="module" src="/js/userScripts/deleteUser.js"></script>
 <%- include('../partials/footer'); %>

@@ -32,7 +32,7 @@ exports.checkAuthorship = (req, post) => {
   }
 };
 
-exports.checkStatus = async (req) => {
+exports.checkUserStatus = async (req) => {
   if (req.user.status === 'passive') {
     const updatedUser = await User.findByIdAndUpdate(req.user._id, { status: 'active' }, {
       runValidators: true,

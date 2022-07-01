@@ -16,14 +16,12 @@
     <button>Upload images</button>
   </form>
   <br>
-  <% if (images.length !== 0) { %>
-    <% for (const image of images) { %>
-      <div>
-        <img src="data:image/png;base64,<%= image.toString('base64') %>" alt="Post image">
-        <button class="delete image" id="<%= images.indexOf(image) %>">Delete image</button>
-      </div>
-    <% } %>
-    <br>
+  <% for (const image of images) { %>
+    <div>
+      <img src="data:image/png;base64,<%= image.toString('base64') %>" alt="Post image">
+      <button class="delete image" id="<%= images.indexOf(image) %>">Delete image</button>
+    </div>
   <% } %>
-  <script src="/js/postScripts/updatePost.js"></script>
+  <br>
+  <script type="module" src="/js/postScripts/updatePost.js"></script>
 <%- include('../partials/footer'); %>

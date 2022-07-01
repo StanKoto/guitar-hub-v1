@@ -1,5 +1,5 @@
 const { Post } = require('../models/Post');
-const { asyncHandler, checkAuthorship, checkStatus, checkResource, processImages } = require('../utils/helperFunctions');
+const { asyncHandler, checkAuthorship, checkUserStatus, checkResource, processImages } = require('../utils/helperFunctions');
 const { ErrorResponse } = require('../utils/errorHandling');
 
 exports.posts_get = asyncHandler(async (req, res, next) => {
@@ -19,7 +19,7 @@ exports.posts_post = asyncHandler(async (req, res, next) => {
   const images = [];
   await processImages(req, images);
   await Post.create({ title: req.body.title, contents: req.body.contents, author: req.user._id, images });
-  await checkStatus(req);
+  await checkUserStatus(req);
   res.status(201).json({ success: true });
 });
 
