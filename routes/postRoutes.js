@@ -3,7 +3,17 @@ const multer = require('multer');
 const { checkAuthentication } = require('../middleware/auth');
 const { searchResults } = require('../middleware/searchResults');
 const { Post } = require('../models/Post');
-const { posts_get, post_get, createPost_get, posts_post, postImages_post, postImages_delete, updatePost_get, post_put, post_delete } = require('../controllers/postController');
+const { 
+  posts_get, 
+  post_get, 
+  createPost_get, 
+  posts_post, 
+  postImages_post, 
+  postImages_delete, 
+  updatePost_get, 
+  post_put, 
+  post_delete
+} = require('../controllers/postController');
 
 const upload = multer({
   limits: {
