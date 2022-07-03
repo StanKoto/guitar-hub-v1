@@ -6,7 +6,17 @@ class ErrorResponse extends Error {
 }
 
 const handleErrors = (err, req, res, next) => {
-  let errors = { username: '', email: '', password: '', title: '', contents: '', images: '', rating: '', credentials: '' };
+  let errors = { 
+    username: '', 
+    email: '', 
+    password: '', 
+    credentials: '', 
+    token: '', 
+    title: '', 
+    contents: '', 
+    images: '', 
+    rating: ''
+  };
 
   if (err.code === 11000) {
     if ('post' in err.keyValue && 'reviewer' in err.keyValue) {
@@ -37,8 +47,14 @@ const handleErrors = (err, req, res, next) => {
     case 'Invalid credentials':
       errors.credentials = 'Invalid credentials, please check your email and password and try again';
       return res.status(400).json({ errors });
+    case 'Invalid email':
+      errors.email = 'Incorrect email, please try again';
+      return res.status(400).json({ errors });
     case 'Invalid password':
       errors.credentials = 'Incorrect password, please try again';
+      return res.status(400).json({ errors });
+    case 'Invalid token':
+      errors.token = 'This token is invalid or has already expired, please go to the auth page and request another token!';
       return res.status(400).json({ errors });
     case 'Own post rated':
       errors.ownPost = 'You cannot rate your own posts';

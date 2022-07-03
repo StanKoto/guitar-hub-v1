@@ -4,15 +4,13 @@ const emptyErrors = (customErrors) => {
   }
 };
 
-const makeRequest = async (url, method, redirectUrl, body, customErrors) => {
+const makeRequest = async (url, method, redirectUrl, body, customErrors, message) => {
   try {
     const params = {method};
     if (body && !(body instanceof FormData)) params.headers = { 'Content-Type': 'application/json' }
     if (method !== 'DELETE') params.body = body;
-
     const res = await fetch(url, params);
     const data = await res.json();
-
     if (data.errors) {
       if (data.errors.ownPost) alert(data.errors.ownPost)
       for (const error of customErrors) {
@@ -33,6 +31,7 @@ const makeRequest = async (url, method, redirectUrl, body, customErrors) => {
       if (data.selfUpdate && data.user.role === 'user') return location.assign('/auth/update')
       if (redirectUrl === 'post') redirectUrl = `/posts/${data.post._id}/${data.post.slug}`
       if (redirectUrl === 'user') redirectUrl = `/users/${data.user._id}/${data.user.slug}`
+      if (message) alert(message)
       location.assign(redirectUrl);
     }
   } catch (err) {

@@ -1,6 +1,14 @@
 const express = require('express');
 const { checkAuthentication, checkRole } = require('../middleware/auth');
-const { index_get, guitarTips_get, manageUsers_get, about_get, unauthorized_get, badRequest_get, serverError_get } = require('../controllers/mainController');
+const { 
+  index_get, 
+  guitarTips_get, 
+  manageUsers_get, 
+  about_get, 
+  unauthorized_get, 
+  badRequest_get, 
+  serverError_get
+} = require('../controllers/mainController');
 
 const mainRouter = express.Router();
 
