@@ -2,3 +2,5 @@ config.env
 node_modules
 request.http
 data
+cert.pem
+key.pem
