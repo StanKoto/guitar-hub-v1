@@ -11,7 +11,7 @@
   <br>
   <span>
     <a href="/ratings?reviewer=<%= user._id %>">View all given ratings</a>
-    <!-- <a href="/ratings?receiver=<%= user._id %>">View all received ratings</a> -->
+    <a href="/ratings?recipient=<%= user._id %>">View all received ratings</a>
   </span>
   <br><br>
   <a href="/users/<%= user._id %>/<%= user.slug %>/update-user">Update user</a>

@@ -16,7 +16,12 @@ exports.ratings_get = asyncHandler(async (req, res, next) => {
 exports.ratings_post = asyncHandler(async (req, res, next) => {
   const post = await checkResource(req, Post);
   if (post.author && post.author.equals(req.user._id)) throw new Error('Own post rated')
-  const rating = new Rating({ rating: req.body.rating, post: post._id, reviewer: req.user._id });
+  const rating = new Rating({
+    rating: req.body.rating, 
+    post: post._id, 
+    reviewer: req.user._id,
+    recipient: post.author
+  });
   await rating.save();
   await checkUserStatus(req);
   res.status(201).json({ success: true });
