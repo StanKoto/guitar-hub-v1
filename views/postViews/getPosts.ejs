@@ -1,11 +1,31 @@
 <%- include('../partials/header'); %>
-  <ul>
-    <% for (post of posts.results) { %>
-      <li>
-        <a href="/posts/<%= post._id %>/<%= post.slug %>"><%= post.title %></a>
-        <br>
-        <span><%= post.contents %></span>
-      </li>
-    <% } %>
-  </ul>
+  <form>
+    <h3>Search all posts in this category</h3>
+    <span>
+      <label for="searchText">Please enter your search text here:</label>
+      <input type="text" name="searchText">
+      <button>Search</button>
+    </span>
+  </form>
+  <% if (posts.results.length === 0) { %>
+    <h3>Sorry, we couldn't find what you were looking for. Please try again with another search text!</h3>
+  <% } else { %>
+    <span>
+      <h3>Sort by: </h3> 
+      Title <button id="title-asc">Asc</button> <button id="title-desc">Desc</button>
+      Rating <button id="rating-asc">Asc</button> <button id="rating-desc">Desc</button>
+      Last updated <button id="updated-asc">Asc</button> <button id="updated-desc">Desc</button>
+    </span>
+    <ul>
+      <% for (post of posts.results) { %>
+        <li>
+          <a href="/posts/<%= post._id %>/<%= post.slug %>"><%= post.title %></a>
+          <br>
+          <span>Author: <%= post.author.username %></span>
+        </li>
+      <% } %>
+    </ul>
+  <% } %>
+
+  <script type="module" src="/js/postScripts/getPosts.js"></script>
 <%- include('../partials/footer'); %>

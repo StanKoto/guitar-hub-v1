@@ -34,6 +34,8 @@ function arrayLimit(val) {
   return val.length <= 10;
 };
 
+postSchema.index({ title: 'text', contents: 'text' });
+
 postSchema.statics.getPostCount = async function (authorId) {
   const aggregationResults = await this.aggregate([
     {
