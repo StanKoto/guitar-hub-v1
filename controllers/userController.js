@@ -9,7 +9,7 @@ const {
 const { ErrorResponse } = require('../utils/errorHandling');
 
 exports.users_get = asyncHandler(async (req, res, next) => {
-  res.render('userViews/getUsers', { title: 'Users', users: res.searchResults });
+  res.render('userViews/getUsers', { title: 'Users', users: res.searchResults, url: req.originalUrl });
 });
 
 exports.createUser_get = asyncHandler((req, res, next) => {

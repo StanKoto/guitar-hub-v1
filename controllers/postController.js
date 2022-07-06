@@ -3,7 +3,7 @@ const { asyncHandler, checkAuthorship, checkUserStatus, checkResource, processIm
 const { ErrorResponse } = require('../utils/errorHandling');
 
 exports.posts_get = asyncHandler(async (req, res, next) => {
-  res.render('postViews/getPosts', { title: 'Posts', posts: res.searchResults });
+  res.render('postViews/getPosts', { title: 'Posts', posts: res.searchResults, url: req.originalUrl });
 });
 
 exports.post_get = asyncHandler(async (req, res, next) => {

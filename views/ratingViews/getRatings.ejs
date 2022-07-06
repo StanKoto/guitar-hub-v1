@@ -9,5 +9,21 @@
         <li>Reviewer: Deleted user</li>
       <% } %>
     <% } %>
-  </ul>  
+  </ul>
+  <span>
+    <% if (ratings.pagination.prev) { %>
+      <% if (url.includes('?')) { %>
+        <a href="<%= url %>&page=<%= ratings.pagination.prev.page %>">Previous page</a>
+      <% } else { %>
+        <a href="<%= url %>?page=<%= ratings.pagination.prev.page %>">Previous page</a>
+      <% } %>
+    <% } %>
+    <% if (ratings.pagination.next) { %>
+      <% if (url.includes('?')) { %>
+        <a href="<%= url %>&page=<%= ratings.pagination.next.page %>">Next page</a>
+      <% } else { %>
+        <a href="<%= url %>?page=<%= ratings.pagination.next.page %>">Next page</a>
+      <% } %>
+    <% } %>
+  </span>
 <%- include('../partials/footer'); %>
