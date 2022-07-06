@@ -13,6 +13,10 @@ const ratingSchema = new mongoose.Schema({
   reviewer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
+  },
+  recipient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 }, 
 {
