@@ -25,6 +25,22 @@
         </li>
       <% } %>
     </ul>
+    <span>
+      <% if (posts.pagination.prev) { %>
+        <% if (url.includes('?')) { %>
+          <a href="<%= url %>&page=<%= posts.pagination.prev.page %>">Previous page</a>
+        <% } else { %>
+          <a href="<%= url %>?page=<%= posts.pagination.prev.page %>">Previous page</a>
+        <% } %>
+      <% } %>
+      <% if (posts.pagination.next) { %>
+        <% if (url.includes('?')) { %>
+          <a href="<%= url %>&page=<%= posts.pagination.next.page %>">Next page</a>
+        <% } else { %>
+          <a href="<%= url %>?page=<%= posts.pagination.next.page %>">Next page</a>
+        <% } %>
+      <% } %>
+    </span>
   <% } %>
 
   <script type="module" src="/js/postScripts/getPosts.js"></script>

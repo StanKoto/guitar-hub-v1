@@ -27,6 +27,22 @@
         </li>
       <% } %>
     </ol>
+    <span>
+      <% if (users.pagination.prev) { %>
+        <% if (url.includes('?')) { %>
+          <a href="<%= url %>&page=<%= users.pagination.prev.page %>">Previous page</a>
+        <% } else { %>
+          <a href="<%= url %>?page=<%= users.pagination.prev.page %>">Previous page</a>
+        <% } %>
+      <% } %>
+      <% if (users.pagination.next) { %>
+        <% if (url.includes('?')) { %>
+          <a href="<%= url %>&page=<%= users.pagination.next.page %>">Next page</a>
+        <% } else { %>
+          <a href="<%= url %>?page=<%= users.pagination.next.page %>">Next page</a>
+        <% } %>
+      <% } %>
+    </span>
   <% } %>
 
   <script type="module" src="/js/userScripts/getUsers.js"></script>

@@ -41,6 +41,10 @@
     <div class="rating error"></div>
     <br>
   <% } %>
+  <% if (post.author) { %>
+    <a href="/posts?author=<%= post.author._id %>">View this author's other posts</a>
+    <br>
+  <% } %>
   <% if (currentUser && (currentUser.role === 'admin' || (post.author && post.author._id.equals(currentUser._id)))) { %>
     <a href="/posts/<%= post._id %>/<%= post.slug %>/update-post">Update post</a>
     <button id="delete-post">Delete post</button>

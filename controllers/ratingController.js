@@ -3,13 +3,14 @@ const { Post } = require('../models/Post');
 const { asyncHandler, checkUserStatus, checkResource } = require('../utils/helperFunctions');
 
 exports.ratings_get = asyncHandler(async (req, res, next) => {
-  if (req.query.post) {
-    res.render('ratingViews/getRatings', { title: `Post ${req.query.post} ratings`, ratings: res.searchResults });
-  }
-
-  if (req.query.reviewer) {
-    res.render('ratingViews/getRatings', { title: `User ${req.query.reviewer} ratings`, ratings: res.searchResults });
-  }
+  let title;
+  if (req.query.post) title = `Post ${req.query.post} ratings`
+  if (req.query.reviewer) title = `User ${req.query.reviewer} ratings`
+  res.render('ratingViews/getRatings', { 
+    title, 
+    ratings: res.searchResults,
+    url: req.originalUrl
+  });
 });
 
 exports.ratings_post = asyncHandler(async (req, res, next) => {
