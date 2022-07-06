@@ -1,29 +1,39 @@
 <%- include('../partials/header'); %>
-  <ul>
-    <% for (rating of ratings.results) { %>
-      <li>Rating: <%= rating.rating %></li>
-      <li>Post: <%= rating.post.title %></li>
-      <% if (rating.reviewer) { %>
-        <li>Reviewer: <%= rating.reviewer.username %></li>
-      <% } else { %>
-        <li>Reviewer: Deleted user</li>
+  <% if (ratings.results.length === 0) { %>
+    <h3>This user hasn't given any ratings yet.</h3>
+  <% } else { %>
+    <span>
+      <h3>Sort by rating: </h3> 
+      <button id="rating-asc">Asc</button> <button id="rating-desc">Desc</button>
+    </span>
+    <ul>
+      <% for (rating of ratings.results) { %>
+        <li>Rating: <%= rating.rating %></li>
+        <li>Post: <%= rating.post.title %></li>
+        <% if (rating.reviewer) { %>
+          <li>Reviewer: <%= rating.reviewer.username %></li>
+        <% } else { %>
+          <li>Reviewer: Deleted user</li>
+        <% } %>
       <% } %>
-    <% } %>
-  </ul>
-  <span>
-    <% if (ratings.pagination.prev) { %>
-      <% if (url.includes('?')) { %>
-        <a href="<%= url %>&page=<%= ratings.pagination.prev.page %>">Previous page</a>
-      <% } else { %>
-        <a href="<%= url %>?page=<%= ratings.pagination.prev.page %>">Previous page</a>
+    </ul>
+    <span>
+      <% if (ratings.pagination.prev) { %>
+        <% if (url.includes('?')) { %>
+          <a href="<%= url %>&page=<%= ratings.pagination.prev.page %>">Previous page</a>
+        <% } else { %>
+          <a href="<%= url %>?page=<%= ratings.pagination.prev.page %>">Previous page</a>
+        <% } %>
       <% } %>
-    <% } %>
-    <% if (ratings.pagination.next) { %>
-      <% if (url.includes('?')) { %>
-        <a href="<%= url %>&page=<%= ratings.pagination.next.page %>">Next page</a>
-      <% } else { %>
-        <a href="<%= url %>?page=<%= ratings.pagination.next.page %>">Next page</a>
+      <% if (ratings.pagination.next) { %>
+        <% if (url.includes('?')) { %>
+          <a href="<%= url %>&page=<%= ratings.pagination.next.page %>">Next page</a>
+        <% } else { %>
+          <a href="<%= url %>?page=<%= ratings.pagination.next.page %>">Next page</a>
+        <% } %>
       <% } %>
-    <% } %>
-  </span>
+    </span>
+  <% } %>
+  
+  <script type="module" src="/js/ratingScripts/getRatings.js"></script>
 <%- include('../partials/footer'); %>
