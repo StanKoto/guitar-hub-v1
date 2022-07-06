@@ -1,11 +1,33 @@
 <%- include('../partials/header'); %>
   <h1>Here you can manage the users on the guitar wiki portal</h1>
   <br>
-  <ol>
-    <% for (user of users.results) { %>
-      <li>
-        <a href="/users/<%= user._id %>/<%= user.slug %>"><%= user.username %></a>
-      </li>
-    <% } %>
-  </ol>
+  <form>
+    <h3>Search all users</h3>
+    <span>
+      <label for="searchText">Please enter your search text here:</label>
+      <input type="text" name="searchText">
+      <button>Search</button>
+    </span>
+  </form>
+  <% if (users.results.length === 0) { %>
+    <h3>Sorry, we couldn't find what you were looking for. Please try again with another search text!</h3>
+  <% } else { %>
+    <span>
+      <h3>Sort by: </h3> 
+      Username <button id="username-asc">Asc</button> <button id="username-desc">Desc</button>
+      Postcount <button id="postcount-asc">Asc</button> <button id="postcount-desc">Desc</button>
+      Status <button id="status-asc">Asc</button> <button id="status-desc">Desc</button>
+      Role <button id="role-asc">Asc</button> <button id="role-desc">Desc</button>
+      Creation date <button id="created-asc">Asc</button> <button id="created-desc">Desc</button>
+    </span>
+    <ol>
+      <% for (user of users.results) { %>
+        <li>
+          <a href="/users/<%= user._id %>/<%= user.slug %>"><%= user.username %></a>
+        </li>
+      <% } %>
+    </ol>
+  <% } %>
+
+  <script type="module" src="/js/userScripts/getUsers.js"></script>
 <%- include('../partials/footer'); %>

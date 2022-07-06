@@ -46,6 +46,8 @@ const userSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
+userSchema.index({ username: 'text', email: 'text' });
+
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next()
   const saltRounds = 10;
