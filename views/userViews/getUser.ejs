@@ -7,7 +7,12 @@
     <li>Role: <%= user.role %></li>
   </ul>
   <br>
-  <a href="/ratings?reviewer=<%= user._id %>">View all given ratings</a>
+  <a href="/posts?author=<%= user._id %>">View all user's posts</a>
+  <br>
+  <span>
+    <a href="/ratings?reviewer=<%= user._id %>">View all given ratings</a>
+    <!-- <a href="/ratings?receiver=<%= user._id %>">View all received ratings</a> -->
+  </span>
   <br><br>
   <a href="/users/<%= user._id %>/<%= user.slug %>/update-user">Update user</a>
   <button id="delete-user">Delete user</button>
