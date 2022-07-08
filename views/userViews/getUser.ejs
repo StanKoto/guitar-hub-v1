@@ -7,15 +7,21 @@
     <li>Role: <%= user.role %></li>
   </ul>
   <br>
-  <a href="/posts?author=<%= user._id %>">View all user's posts</a>
+  <a href="/posts/author-posts?author=<%= user._id %>">View all user's posts</a>
   <br>
   <span>
-    <a href="/ratings?reviewer=<%= user._id %>">View all given ratings</a>
-    <a href="/ratings?recipient=<%= user._id %>">View all received ratings</a>
+    <a href="<%= path %>/user-ratings/given-ratings?reviewer=<%= user._id %>">
+      View all given ratings
+    </a>
+    <a href="<%= path %>/user-ratings/received-ratings?recipient=<%= user._id %>">
+      View all received ratings
+    </a>
   </span>
   <br><br>
-  <a href="/users/<%= user._id %>/<%= user.slug %>/update-user">Update user</a>
+  <a href="<%= path %>/update-user">Update user</a>
   <button id="delete-user">Delete user</button>
+  <br>
+  <a href="/users">Back to all users</a>
 
   <script type="module" src="/js/userScripts/deleteUser.js"></script>
 <%- include('../partials/footer'); %>

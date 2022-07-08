@@ -7,23 +7,27 @@ const {
   createUser_get, 
   users_post, 
   user_get, 
+  user_delete,
   updateUser_get, 
   userDetails_put, 
-  userPassword_put, 
-  user_delete
+  userPassword_put 
 } = require('../controllers/userController');
+const userRatingRouter = require('../routes/userRatingRoutes');
 
 const userRouter = express.Router();
 
 userRouter.use(checkAuthentication, checkRole);
 
-userRouter.get('/', searchResults(User, 'posts'), users_get);
-userRouter.get('/create-user', createUser_get);
-userRouter.post('/', users_post);
-userRouter.get('/:id/:slug', user_get);
+userRouter.get('/', searchResults(User, [ 'posts' ]), users_get);
+userRouter.route('/create-user')
+  .get(createUser_get)
+  .post(users_post);
+userRouter.route('/:id/:slug')
+  .get(user_get)
+  .delete(user_delete);
+userRouter.use('/:id/:slug/user-ratings', userRatingRouter);
 userRouter.get('/:id/:slug/update-user', updateUser_get);
-userRouter.put('/:id/update-details', userDetails_put);
-userRouter.put('/:id/update-password', userPassword_put);
-userRouter.delete('/:id', user_delete);
+userRouter.put('/:id/:slug/update-user/update-details', userDetails_put);
+userRouter.put('/:id/:slug/update-user/update-password', userPassword_put);
 
 module.exports = userRouter;

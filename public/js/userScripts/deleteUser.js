@@ -3,9 +3,7 @@ import { makeRequest } from '../modules/helpers.js';
 document.getElementById('delete-user').addEventListener('click', async (e) => {
   e.preventDefault();
 
-  const userId = window.location.pathname.split('/')[2];
-
-  const url = `/users/${userId}`;
+  const url = location.pathname;
   const method = 'DELETE';
   const redirectUrl = '/users';
 

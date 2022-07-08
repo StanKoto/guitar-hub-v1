@@ -4,9 +4,6 @@ const ratingForm = document.querySelector('form');
 
 if (ratingForm) {
   const ratingError = { element: document.querySelector('.rating.error'), errorType: 'rating' };
-  
-  const postId = window.location.pathname.split('/')[2];
-  const postSlug = window.location.pathname.split('/')[3];
 
   ratingForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -15,9 +12,9 @@ if (ratingForm) {
 
     const rating = ratingForm.rating.value;
 
-    const url = `/ratings/${postId}`;
+    const url = `${location.pathname}/post-ratings`;
     const method = 'POST';
-    const redirectUrl = `/posts/${postId}/${postSlug}`;
+    const redirectUrl = location.pathname;
     const body = JSON.stringify({ rating });
 
     await makeRequest(url, method, redirectUrl, body, [ ratingError ]);

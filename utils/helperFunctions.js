@@ -43,7 +43,7 @@ exports.checkUserStatus = async (req) => {
 };
 
 exports.checkResource = async (req, model, select, populate) => {
-  const id = (req.params.postId || req.params.id) || req.user._id;
+  const id = req.params.id || req.user._id;
   let resource = model.findById(id)
   if (select) resource = await resource.select(select)
   if (populate) resource = await resource.populate(populate)

@@ -17,7 +17,7 @@ form.addEventListener('submit', async (e) => {
   const email = form.email.value;
   const password = form.password.value;
 
-  const url = '/auth/signup';
+  const url = location.pathname;
   const method = 'POST';
   const redirectUrl = '/';
   const body = JSON.stringify({ username, email, password });

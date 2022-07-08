@@ -7,8 +7,6 @@ const tokenError = { element: document.querySelector('.token.error'), errorType:
 
 const customErrors = [ passwordError, tokenError ];
 
-const resetToken = window.location.pathname.split('/')[3];
-
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -16,7 +14,7 @@ form.addEventListener('submit', async (e) => {
 
   const password = form.password.value;
 
-  const url = `/auth/resetpassword/${resetToken}`;
+  const url = location.pathname;
   const method = 'PUT';
   const redirectUrl = '/auth/logout';
   const body = JSON.stringify({ password });

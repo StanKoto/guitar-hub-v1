@@ -1,0 +1,16 @@
+<span>
+  <% if (data.pagination.prev) { %>
+    <% if (url.includes('?')) { %>
+      <a href="<%= url %>&page=<%= data.pagination.prev.page %>">Previous page</a>
+    <% } else { %>
+      <a href="<%= url %>?page=<%= data.pagination.prev.page %>">Previous page</a>
+    <% } %>
+  <% } %>
+  <% if (data.pagination.next) { %>
+    <% if (url.includes('?')) { %>
+      <a href="<%= url %>&page=<%= data.pagination.next.page %>">Next page</a>
+    <% } else { %>
+      <a href="<%= url %>?page=<%= data.pagination.next.page %>">Next page</a>
+    <% } %>
+  <% } %>
+</span>

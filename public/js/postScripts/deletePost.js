@@ -7,7 +7,7 @@ if (deleteButton) {
 
     const postId = window.location.pathname.split('/')[2];
 
-    const url = `/posts/${postId}`;
+    const url = location.pathname;
     const method = 'DELETE';
     const redirectUrl = '/posts';
     

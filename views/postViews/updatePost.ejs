@@ -1,10 +1,10 @@
 <%- include('../partials/header'); %>
   <form id="contents-form">
     <label for="title">Title</label>
-    <textarea name="title" cols="30" rows="1" maxlength="50"><%= title %></textarea>
+    <textarea name="title" cols="30" rows="1" maxlength="50"><%= post.title %></textarea>
     <div class="title error"></div>
     <label for="contents">Contents</label>
-    <textarea name="contents" cols="30" rows="10" maxlength="5000"><%= contents %></textarea>
+    <textarea name="contents" cols="30" rows="10" maxlength="5000"><%= post.contents %></textarea>
     <div class="contents error"></div>
     <button>Update text contents</button>
   </form>
@@ -16,12 +16,14 @@
     <button>Upload images</button>
   </form>
   <br>
-  <% for (const image of images) { %>
+  <% for (const image of post.images) { %>
     <div>
       <img src="data:image/png;base64,<%= image.toString('base64') %>" alt="Post image">
-      <button class="delete image" id="<%= images.indexOf(image) %>">Delete image</button>
+      <button class="delete image" id="<%= post.images.indexOf(image) %>">Delete image</button>
     </div>
   <% } %>
   <br>
+  <a href="/posts/<%= post._id %>/<%= post.slug %>">Go back to the post page</a>
+
   <script type="module" src="/js/postScripts/updatePost.js"></script>
 <%- include('../partials/footer'); %>

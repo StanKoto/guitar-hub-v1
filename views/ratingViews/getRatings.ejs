@@ -1,38 +1,46 @@
 <%- include('../partials/header'); %>
-  <% if (ratings.results.length === 0) { %>
-    <h3>This user hasn't given any ratings yet.</h3>
+  <% if (data.results.length === 0) { %>
+    <% if (path.includes('post-ratings')) { %>
+      <h3>Sorry, there either are no ratings matching your search criteria or this post hasn't received any ratings yet.</h3>
+    <% } else if (path.includes('given-ratings')) { %>
+      <h3>Sorry, there either are no ratings matching your search criteria or this user hasn't given any ratings yet.</h3>
+    <% } else { %>
+      <h3>Sorry, there either are no ratings matching your search criteria or this user hasn't received any ratings yet</h3>
+    <% } %>
   <% } else { %>
     <span>
-      <h3>Sort by rating: </h3> 
-      <button id="rating-asc">Asc</button> <button id="rating-desc">Desc</button>
+      <h3>Sort by: </h3> 
+      Rating <button id="rating-asc">Asc</button> <button id="rating-desc">Desc</button>
+      <% if (path.includes('post-ratings') || path.includes('received-ratings')) { %>
+        Reviewer <button id="reviewer-asc">Asc</button> <button id="reviewer-desc">Desc</button>
+      <% } else { %>
+        Recipient <button id="recipient-asc">Asc</button> <button id="recipient-desc">Desc</button>
+      <% } %>
+      Creation date <button id="created-asc">Asc</button> <button id="created-desc">Desc</button>
     </span>
     <ul>
-      <% for (rating of ratings.results) { %>
-        <li>Rating: <%= rating.rating %></li>
+      <% for (rating of data.results) { %>
         <li>Post: <%= rating.post.title %></li>
+        <% if (rating.recipient) { %>
+          <li>Author: <%= rating.recipient.username %></li>
+        <% } else { %>
+          <li>Author: Deleted user</li>
+        <% } %>
         <% if (rating.reviewer) { %>
           <li>Reviewer: <%= rating.reviewer.username %></li>
         <% } else { %>
           <li>Reviewer: Deleted user</li>
         <% } %>
+        <li>Rating: <%= rating.rating %></li>
       <% } %>
     </ul>
-    <span>
-      <% if (ratings.pagination.prev) { %>
-        <% if (url.includes('?')) { %>
-          <a href="<%= url %>&page=<%= ratings.pagination.prev.page %>">Previous page</a>
-        <% } else { %>
-          <a href="<%= url %>?page=<%= ratings.pagination.prev.page %>">Previous page</a>
-        <% } %>
-      <% } %>
-      <% if (ratings.pagination.next) { %>
-        <% if (url.includes('?')) { %>
-          <a href="<%= url %>&page=<%= ratings.pagination.next.page %>">Next page</a>
-        <% } else { %>
-          <a href="<%= url %>?page=<%= ratings.pagination.next.page %>">Next page</a>
-        <% } %>
-      <% } %>
-    </span>
+    <%- include('../partials/pagination'); %>
+  <% } %>
+  <br>
+  <% if (path.includes('post-ratings')) { %>
+    <a href="/posts/<%= id %>/<%= slug %>">Back to the post</a>
+  <% } else { %>
+    <a href="/users/<%= id %>/<%= slug %>">Back to the user</a>
   <% } %>
   
   <script type="module" src="/js/ratingScripts/getRatings.js"></script>

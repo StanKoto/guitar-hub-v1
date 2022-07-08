@@ -24,9 +24,9 @@ form.addEventListener('submit', async (e) => {
     formData.append('images', image);
   }
 
-  const url = '/posts';
+  const url = location.pathname;
   const method = 'POST';
-  const redirectUrl = '/posts';
+  const redirectUrl = 'post';
 
   await makeRequest(url, method, redirectUrl, formData, customErrors);
 });
