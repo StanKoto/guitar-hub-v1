@@ -8,12 +8,13 @@ const {
   post_get, 
   createPost_get, 
   posts_post, 
-  postImages_post, 
-  postImages_delete, 
+  post_delete,
   updatePost_get, 
   post_put, 
-  post_delete
+  postImages_post, 
+  postImages_delete
 } = require('../controllers/postController');
+const postRatingRouter = require('../routes/postRatingRoutes');
 
 const upload = multer({
   limits: {
@@ -29,16 +30,19 @@ const upload = multer({
 
 const postRouter = express.Router();
 
-postRouter.get('/', searchResults(Post, { path: 'author', select: 'username' }), posts_get);
+postRouter.get('/', searchResults(Post, [{ path: 'author', select: 'username' }]), posts_get);
+postRouter.get('/author-posts', searchResults(Post, [{ path: 'author', select: 'username slug' }]), posts_get);
 postRouter.get('/:id/:slug', post_get);
 postRouter.use(checkAuthentication);
-postRouter.get('/create-post', createPost_get);
-postRouter.post('/', upload.array('images', 10), posts_post);
-postRouter.post('/:id/images', upload.array('images', 10), postImages_post)
-postRouter.delete('/:id/images/:index', postImages_delete);
-postRouter.get('/:id/:slug/update-post', updatePost_get);
-postRouter.route('/:id')
-  .put(post_put)
-  .delete(post_delete);
+postRouter.route('/create-post')
+.get(createPost_get)
+.post(upload.array('images', 10), posts_post);
+postRouter.delete('/:id/:slug', post_delete);
+postRouter.use('/:id/:slug/post-ratings', postRatingRouter);
+postRouter.route('/:id/:slug/update-post')
+.get(updatePost_get)
+.put(post_put);
+postRouter.post('/:id/:slug/update-post/images', upload.array('images', 10), postImages_post)
+postRouter.delete('/:id/:slug/update-post/images/:index', postImages_delete);
 
 module.exports = postRouter;

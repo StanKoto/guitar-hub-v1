@@ -58,6 +58,7 @@ userSchema.pre('save', async function (next) {
 userSchema.pre('remove', async function () {
   await this.model('Post').updateMany({ author: this._id }, { author: null });
   await this.model('Rating').updateMany({ reviewer: this._id }, { reviewer: null });
+  await this.model('Rating').updateMany({ recipient: this._id }, { recipient: null });
 });
 
 userSchema.methods.matchPassword = async function (password) {

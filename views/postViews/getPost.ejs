@@ -18,7 +18,7 @@
       <span>Average rating: <%= post.averageRating %></span>
       <% if (currentUser) { %>
         <br>
-        <a href="/ratings?post=<%= post._id %>">View all received ratings</a>
+        <a href="<%= path %>/post-ratings?post=<%= post._id %>">View all received ratings</a>
         <% } %>
     </div>
     <br>
@@ -42,13 +42,15 @@
     <br>
   <% } %>
   <% if (post.author) { %>
-    <a href="/posts?author=<%= post.author._id %>">View this author's other posts</a>
+    <a href="/posts/author-posts?author=<%= post.author._id %>">View this author's other posts</a>
     <br>
   <% } %>
   <% if (currentUser && (currentUser.role === 'admin' || (post.author && post.author._id.equals(currentUser._id)))) { %>
-    <a href="/posts/<%= post._id %>/<%= post.slug %>/update-post">Update post</a>
+    <a href="<%= path %>/update-post">Update post</a>
     <button id="delete-post">Delete post</button>
   <% } %>
+  <br>
+  <a href="/posts">View all posts</a>
 
   <script type="module" src="/js/postScripts/ratePost.js"></script>
   <script type="module" src="/js/postScripts/deletePost.js"></script>

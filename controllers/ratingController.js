@@ -4,12 +4,15 @@ const { asyncHandler, checkUserStatus, checkResource } = require('../utils/helpe
 
 exports.ratings_get = asyncHandler(async (req, res, next) => {
   let title;
-  if (req.query.post) title = `Post ${req.query.post} ratings`
-  if (req.query.reviewer) title = `User ${req.query.reviewer} ratings`
+  if (req.baseUrl.includes('post-ratings')) title = `Post ${req.params.id} ratings`
+  if (req.path.includes('given-ratings')) title = `Ratings given by ${req.params.slug}`
+  if (req.path.includes('received-ratings')) title = `Ratings received by ${req.params.slug}`
   res.render('ratingViews/getRatings', { 
     title, 
-    ratings: res.searchResults,
-    url: req.originalUrl
+    data: res.searchResults, 
+    path: req.baseUrl + req.path, 
+    id: req.params.id, 
+    slug: req.params.slug 
   });
 });
 

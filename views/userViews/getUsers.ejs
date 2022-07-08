@@ -9,7 +9,7 @@
       <button>Search</button>
     </span>
   </form>
-  <% if (users.results.length === 0) { %>
+  <% if (data.results.length === 0) { %>
     <h3>Sorry, there seem to currently be no users matching your search criteria.</h3>
   <% } else { %>
     <span>
@@ -21,29 +21,16 @@
       Creation date <button id="created-asc">Asc</button> <button id="created-desc">Desc</button>
     </span>
     <ol>
-      <% for (user of users.results) { %>
+      <% for (user of data.results) { %>
         <li>
           <a href="/users/<%= user._id %>/<%= user.slug %>"><%= user.username %></a>
         </li>
       <% } %>
     </ol>
-    <span>
-      <% if (users.pagination.prev) { %>
-        <% if (url.includes('?')) { %>
-          <a href="<%= url %>&page=<%= users.pagination.prev.page %>">Previous page</a>
-        <% } else { %>
-          <a href="<%= url %>?page=<%= users.pagination.prev.page %>">Previous page</a>
-        <% } %>
-      <% } %>
-      <% if (users.pagination.next) { %>
-        <% if (url.includes('?')) { %>
-          <a href="<%= url %>&page=<%= users.pagination.next.page %>">Next page</a>
-        <% } else { %>
-          <a href="<%= url %>?page=<%= users.pagination.next.page %>">Next page</a>
-        <% } %>
-      <% } %>
-    </span>
+    <%- include('../partials/pagination'); %>
   <% } %>
+  <br>
+  <a href="/manage-users">To the user management overview</a>
 
   <script type="module" src="/js/userScripts/getUsers.js"></script>
 <%- include('../partials/footer'); %>

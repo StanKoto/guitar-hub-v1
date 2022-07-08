@@ -11,8 +11,6 @@ const validatePasswordError = { element: document.querySelector('.validate.passw
 const customDetailsErrors = [ usernameError, emailError ];
 const customPasswordErrors = [ matchPasswordError, validatePasswordError ];
 
-const userId = window.location.pathname.split('/')[2];
-
 const redirectUrl = 'user';
 
 detailsForm.addEventListener('submit', async (e) => {
@@ -23,7 +21,7 @@ detailsForm.addEventListener('submit', async (e) => {
   const username = detailsForm.username.value;
   const email = detailsForm.email.value;
   
-  const url = `/users/${userId}/update-details`;
+  const url = `${location.pathname}/update-details`;
   const method = 'PUT';
   let body = {};
   if (username.length !== 0) body.username = username
@@ -41,7 +39,7 @@ passwordForm.addEventListener('submit', async (e) => {
   const adminPassword = passwordForm.adminPassword.value;
   const newPassword = passwordForm.newPassword.value;
 
-  const url = `/users/${userId}/update-password`;
+  const url = `${location.pathname}/update-password`;
   const method = 'PUT';
   const body = JSON.stringify({ adminPassword, newPassword });
 

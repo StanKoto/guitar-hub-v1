@@ -71,17 +71,17 @@ exports.resetPassword_put = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true });
 });
 
-exports.update_get = asyncHandler(async (req, res, next) => {
+exports.updateProfile_get = asyncHandler(async (req, res, next) => {
   const user = await checkResource(req, User);
   res.render('authViews/updateDetails', { title: 'Update my details', user });
 });
 
-exports.updateDetails_put = asyncHandler(async (req, res, next) => {
+exports.myDetails_put = asyncHandler(async (req, res, next) => {
   const user = await checkResourceAndUpdate(req, User);
   regenerateSession(req, res, user);
 });
 
-exports.updatePassword_put = asyncHandler(async (req, res, next) => {
+exports.myPassword_put = asyncHandler(async (req, res, next) => {
   const user = await checkResource(req, User, '+password');
   await checkPassword(req, user, req.body.currentPassword);
   user.password = req.body.newPassword;

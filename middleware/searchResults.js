@@ -1,4 +1,4 @@
-exports.searchResults = (model, populateOne, populateTwo) => async (req, res, next) => {
+exports.searchResults = (model, populate) => async (req, res, next) => {
   let results;
   const query = { ...req.query };
   const excludedFields = [ 'select', 'sort', 'textSearch', 'page', 'limit' ];
@@ -10,8 +10,11 @@ exports.searchResults = (model, populateOne, populateTwo) => async (req, res, ne
   if (req.query.textSearch) adjustedQuery['$text'] = { $search: req.query.textSearch.split(',').join(' ') }
   results = req.query.textSearch ? model.find(adjustedQuery, { score: { $meta: 'textScore' } }) : model.find(adjustedQuery)
   if (req.query.select) results = results.select(req.query.select.split(',').join(' '))
-  if (populateOne) results = results.populate(populateOne);
-  if (populateTwo) results = results.populate(populateTwo);
+  if (populate) {
+    for (const field of populate) {
+      results = results.populate(field);
+    }
+  }
   if (req.query.textSearch) results = results.sort({ score: { $meta: 'textScore' } })
   results = req.query.sort ? results.sort(req.query.sort.split(',').join(' ')) : results.sort('-createdAt')
   const page = parseInt(req.query.page, 10) || 1;

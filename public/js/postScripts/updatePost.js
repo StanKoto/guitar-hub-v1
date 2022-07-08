@@ -9,10 +9,7 @@ const imageError = { element: document.querySelector('.image.error'), errorType:
 
 const customContentErrors = [ titleError, contentsError ];
 
-const postId = window.location.pathname.split('/')[2];
-const postSlug = window.location.pathname.split('/')[3];
-
-const imgRedirectUrl = `/posts/${postId}/${postSlug}/update-post`;
+const imgRedirectUrl = location.pathname;
 
 contentForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -22,7 +19,7 @@ contentForm.addEventListener('submit', async (e) => {
   const title = contentForm.title.value;
   const contents = contentForm.contents.value;
 
-  const url = `/posts/${postId}`;
+  const url = location.pathname;
   const method = 'PUT';
   const redirectUrl = 'post';
   const body = JSON.stringify({ title, contents });
@@ -41,7 +38,7 @@ imageForm.addEventListener('submit', async (e) => {
     formData.append('images', image);
   }
 
-  const url = `/posts/${postId}/images`;
+  const url = `${location.pathname}/images`;
   const method = 'POST';
 
   await makeRequest(url, method, imgRedirectUrl, formData, [ imageError ]);
@@ -51,7 +48,7 @@ document.querySelectorAll('.delete.image').forEach(item => {
   item.addEventListener('click', async (e) => {
     e.preventDefault();
 
-    const url = `/posts/${postId}/images/${item.id}`;
+    const url = `${location.pathname}/images/${item.id}`;
     const method = 'DELETE';
 
     await makeRequest(url, method, imgRedirectUrl);

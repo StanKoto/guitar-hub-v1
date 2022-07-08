@@ -9,7 +9,7 @@ const {
 const { ErrorResponse } = require('../utils/errorHandling');
 
 exports.users_get = asyncHandler(async (req, res, next) => {
-  res.render('userViews/getUsers', { title: 'Users', users: res.searchResults, url: req.originalUrl });
+  res.render('userViews/getUsers', { title: 'Users', data: res.searchResults });
 });
 
 exports.createUser_get = asyncHandler((req, res, next) => {
@@ -23,7 +23,13 @@ exports.users_post = asyncHandler(async (req, res, next) => {
 
 exports.user_get = asyncHandler(async (req, res, next) => {
   const user = await checkResource(req, User);
-  res.render('userViews/getUser', { title: user.username, user });
+  res.render('userViews/getUser', { title: user.username, user, path: req.baseUrl + req.path });
+});
+
+exports.user_delete = asyncHandler(async (req, res, next) => {
+  const user = await checkResource(req, User);
+  await user.remove();
+  res.status(200).json({ success: true });
 });
 
 exports.updateUser_get = asyncHandler(async (req, res, next) => {
@@ -46,10 +52,4 @@ exports.userPassword_put = asyncHandler(async (req, res, next) => {
   await user.save();
   if (user._id.equals(req.user._id)) return regenerateSession(req, res, user)
   res.status(200).json({ user, selfUpdate: false });
-});
-
-exports.user_delete = asyncHandler(async (req, res, next) => {
-  const user = await checkResource(req, User);
-  await user.remove();
-  res.status(200).json({ success: true });
 });

@@ -11,9 +11,9 @@ form.addEventListener('submit', async (e) => {
 
   const email = form.email.value;
 
-  const url = '/auth/forgotPassword';
+  const url = location.pathname;
   const method = 'POST';
-  const redirectUrl = '/auth/forgotPassword';
+  const redirectUrl = location.pathname;
   const body = JSON.stringify({ email });
   const message = 'We have sent an email with further instructions to the address you provided. Please check for it in your mailbox or try again should you not receive it shortly.';
 
