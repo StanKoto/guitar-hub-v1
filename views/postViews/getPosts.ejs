@@ -25,7 +25,10 @@
         <li>
           <a href="/posts/<%= post._id %>/<%= post.slug %>"><%= post.title %></a>
           <br>
+          <span>Category: <%= post.category %></span>
+          <br>
           <span>Author: <%= post.author.username %></span>
+          <br><br>
         </li>
       <% } %>
     </ul>

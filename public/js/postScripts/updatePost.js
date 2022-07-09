@@ -16,13 +16,17 @@ contentForm.addEventListener('submit', async (e) => {
 
   emptyErrors(customContentErrors);
 
-  const title = contentForm.title.value;
-  const contents = contentForm.contents.value;
+  const category = contentForm.category.value;
 
   const url = location.pathname;
   const method = 'PUT';
   const redirectUrl = 'post';
-  const body = JSON.stringify({ title, contents });
+  let body = {};
+  body.title = contentForm.title.value;
+  body.contents = contentForm.contents.value;
+  if (category.length !== 0) body.category = category;
+  
+  body = JSON.stringify(body);
 
   await makeRequest(url, method, redirectUrl, body, customContentErrors);
 });
@@ -44,7 +48,7 @@ imageForm.addEventListener('submit', async (e) => {
   await makeRequest(url, method, imgRedirectUrl, formData, [ imageError ]);
 });
 
-document.querySelectorAll('.delete.image').forEach(item => {
+for (const item of document.querySelectorAll('.delete.image')) {
   item.addEventListener('click', async (e) => {
     e.preventDefault();
 
@@ -53,4 +57,4 @@ document.querySelectorAll('.delete.image').forEach(item => {
 
     await makeRequest(url, method, imgRedirectUrl);
   });
-});
+};

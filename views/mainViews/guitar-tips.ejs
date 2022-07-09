@@ -1,12 +1,24 @@
 <%- include('../partials/header'); %>
   <h1>Here you can find most cool guitar tips on the net!</h1>
   <br>
+  <p><a href="/posts">View all tips</a></p>
+  <p>View by category:</p>
   <ul>
-    <li><a href="/posts">View all tips</a></li>
-    <% if (currentUser) { %>
-      <li><a href="/posts/create-post">Share your guitar tips</a></li>
-    <% } %>
+    <li>
+      <a href="/posts?category=Guitar,%20strings%20and%20accessories%20choice">Guitar, strings and accessories choice</a>
+    </li>
+    <li><a href="/posts?category=Care%20and%20maintenance">Care and maintenance</a></li>
+    <li><a href="/posts?category=Recording%20and%20amplification">Recording and amplification</a></li>
+    <li><a href="/posts?category=Other%20topics">Other topics</a></li>
   </ul>
+  <% if (currentUser) { %>
+    <p>
+      <span>
+        <a href="/posts/create-post">Share my guitar tips</a>
+        <a href="/posts/author-posts?author=<%= currentUser._id %>">View my published tips</a>
+      </span>
+    </p>
+  <% } %>
   <br>
   <a href="/">Go back to main menu</a>
 <%- include('../partials/footer'); %>

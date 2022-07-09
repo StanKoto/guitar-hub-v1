@@ -7,21 +7,21 @@ const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: [true, 'Please provide a username'],
+    required: [ true, 'Please provide a username' ],
     unique: true
   },
   slug: String,
   email: {
     type: String,
-    required: [true, 'Please provide an email'],
+    required: [ true, 'Please provide an email' ],
     unique: true,
     lowercase: true,
-    validate: [isEmail, 'Please enter a valid email']
+    validate: [ isEmail, 'Please enter a valid email' ]
   },
   password: {
     type: String,
-    required: [true, 'Please provide a password'],
-    minlength: [6, 'Minimum password length is 6 characters'],
+    required: [ true, 'Please provide a password' ],
+    minlength: [ 6, 'Minimum password length is 6 characters' ],
     select: false
   },
   postCount: {
@@ -30,12 +30,12 @@ const userSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['active', 'passive'],
+    enum: [ 'active', 'passive' ],
     default: 'passive'
   },
   role: {
     type: String,
-    enum: ['admin', 'user'],
+    enum: [ 'admin', 'user' ],
     default: 'user'
   },
   resetPasswordToken: String,

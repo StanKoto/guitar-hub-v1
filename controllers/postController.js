@@ -18,7 +18,13 @@ exports.createPost_get = asyncHandler((req, res, next) => {
 exports.posts_post = asyncHandler(async (req, res, next) => {
   const images = [];
   await processImages(req, images);
-  const post = await Post.create({ title: req.body.title, contents: req.body.contents, author: req.user._id, images });
+  const post = await Post.create({ 
+    title: req.body.title, 
+    contents: req.body.contents, 
+    category: req.body.category, 
+    author: req.user._id, 
+    images
+  });
   await checkUserStatus(req);
   res.status(201).json({ post });
 });
@@ -40,6 +46,7 @@ exports.post_put = asyncHandler(async (req, res, next) => {
   checkAuthorship(req, post);
   post.title = req.body.title;
   post.contents = req.body.contents;
+  if (req.body.category) post.category = req.body.category
   await post.save();
   res.status(200).json({ post });
 });
