@@ -8,6 +8,8 @@
       <img src="data:image/png;base64,<%= image.toString('base64') %>" alt="Post image">
     <% } %>
   </div>
+  <br>
+  <span>Category: <%= post.category %></span>
   <% if (post.author) { %>
     <br>
     <span>Author: <%= post.author.username %></span>
@@ -42,7 +44,11 @@
     <br>
   <% } %>
   <% if (post.author) { %>
-    <a href="/posts/author-posts?author=<%= post.author._id %>">View this author's other posts</a>
+    <% if (post.author._id.equals(currentUser._id)) { %>
+      <a href="/posts/author-posts?author=<%= currentUser._id %>">View all my published posts</a>
+    <% } else { %>
+      <a href="/posts/author-posts?author=<%= post.author._id %>">View this author's other posts</a>
+    <% } %>
     <br>
   <% } %>
   <% if (currentUser && (currentUser.role === 'admin' || (post.author && post.author._id.equals(currentUser._id)))) { %>
@@ -50,7 +56,7 @@
     <button id="delete-post">Delete post</button>
   <% } %>
   <br>
-  <a href="/posts">View all posts</a>
+  <a href="/posts?category=<%= post.category %>">View all posts in this category</a>
 
   <script type="module" src="/js/postScripts/ratePost.js"></script>
   <script type="module" src="/js/postScripts/deletePost.js"></script>

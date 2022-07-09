@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const ratingSchema = new mongoose.Schema({
   rating: {
     type: Number,
-    required: [true, 'Please rate the post before submitting your vote'],
+    required: [ true, 'Please rate the post before submitting your vote' ],
     enum: { values: [1, 2, 3, 4, 5], message: '{VALUE} is not supported, only integers from 1 to 5 are accepted' }
   },
   post: {

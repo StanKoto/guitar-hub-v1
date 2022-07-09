@@ -4,19 +4,19 @@ const slugify = require('slugify');
 const postSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, 'Please provide a post title'],
-    maxLength: [50, 'Maximum title length is 50 characters']
+    required: [ true, 'Please provide a post title' ],
+    maxLength: [ 50, 'Maximum title length is 50 characters' ]
   },
   slug: String,
   contents: {
     type: String,
-    required: [true, 'Please enter some post contents'],
-    maxLength: [5000, 'Maximum contents length is 5000 characters']
+    required: [ true, 'Please enter some post contents' ],
+    maxLength: [ 5000, 'Maximum contents length is 5000 characters' ]
   },
-  images: {
-    type: [Buffer],
-    select: false,
-    validate: [arrayLimit, 'The number of {PATH} attached to the post would exceeed the limit of 10, please select less images or delete some of the already attached ones']
+  category: {
+    type: String,
+    enum: [ 'Guitar, strings and accessories choice', 'Care and maintenance', 'Recording and amplification', 'Other topics' ],
+    required: [ true, 'Please choose a category for your post' ]
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -24,6 +24,11 @@ const postSchema = new mongoose.Schema({
   },
   averageRating: {
     type: Number
+  },
+  images: {
+    type: [ Buffer ],
+    select: false,
+    validate: [ arrayLimit, 'The number of {PATH} attached to the post would exceeed the limit of 10, please select less images or delete some of the already attached ones' ]
   }
 },
 {

@@ -13,7 +13,8 @@ const handleErrors = (err, req, res, next) => {
     credentials: '', 
     token: '', 
     title: '', 
-    contents: '', 
+    contents: '',
+    category: '', 
     images: '', 
     rating: ''
   };
@@ -28,7 +29,7 @@ const handleErrors = (err, req, res, next) => {
   }
 
   if (err.name === 'ValidationError') {
-    for ({ properties } of Object.values(err.errors)) {
+    for (const { properties } of Object.values(err.errors)) {
       errors[properties.path] = properties.message;
     }
     return res.status(400).json({ errors });
