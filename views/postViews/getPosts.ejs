@@ -34,10 +34,11 @@
     </ul>
     <%- include('../partials/pagination'); %>
   <% } %>
-  <br>
   <% if (path.includes('author-posts') && currentUser && currentUser.role === 'admin') { %>
+    <br>
     <a href="/users/<%= data.results[0].author._id %>/<%= data.results[0].author.slug %>">View posts' author page</a>
   <% } %>
+  <br><br>
   <a href="/guitar-tips">To the guitar tips overview</a>
 
   <script type="module" src="/js/postScripts/getPosts.js"></script>
