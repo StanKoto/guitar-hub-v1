@@ -41,9 +41,7 @@ const userSchema = new mongoose.Schema({
   resetPasswordToken: String,
   resetPasswordExpire: Date
 }, {
-  timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true }
+  timestamps: true
 });
 
 userSchema.index({ username: 'text', email: 'text' });
@@ -74,12 +72,5 @@ userSchema.methods.getResetPasswordToken = function () {
 
   return resetToken;
 };
-
-userSchema.virtual('posts', {
-  ref: 'Post',
-  localField: '_id',
-  foreignField: 'author',
-  justOne: false
-});
 
 exports.User = mongoose.model('User', userSchema);

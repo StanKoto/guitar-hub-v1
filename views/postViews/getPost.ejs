@@ -25,7 +25,7 @@
     </div>
     <br>
   <% } %>
-  <% if (currentUser && (!post.author || post.author && !post.author._id.equals(currentUser._id))) { %>
+  <% if (currentUser && notRated && (!post.author || post.author && !post.author._id.equals(currentUser._id))) { %>
     <p>Rate this post:</p>
     <form>
       <input type="radio" id="one" name="rating" value="1">
@@ -44,7 +44,7 @@
     <br>
   <% } %>
   <% if (post.author) { %>
-    <% if (post.author._id.equals(currentUser._id)) { %>
+    <% if (currentUser && post.author._id.equals(currentUser._id)) { %>
       <a href="/posts/author-posts?author=<%= currentUser._id %>">View all my published posts</a>
     <% } else { %>
       <a href="/posts/author-posts?author=<%= post.author._id %>">View this author's other posts</a>
