@@ -18,7 +18,7 @@ const userRouter = express.Router();
 
 userRouter.use(checkAuthentication, checkRole);
 
-userRouter.get('/', searchResults(User, [ 'posts' ]), users_get);
+userRouter.get('/', searchResults(User), users_get);
 userRouter.route('/create-user')
   .get(createUser_get)
   .post(users_post);

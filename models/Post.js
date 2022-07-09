@@ -32,12 +32,21 @@ const postSchema = new mongoose.Schema({
   }
 },
 {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
 function arrayLimit(val) {
   return val.length <= 10;
 };
+
+postSchema.virtual('ratings', {
+  ref: 'Rating',
+  localField: '_id',
+  foreignField: 'post',
+  justOne: false
+});
 
 postSchema.index({ title: 'text', contents: 'text' });
 

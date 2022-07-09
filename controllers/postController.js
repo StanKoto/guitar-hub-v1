@@ -8,7 +8,17 @@ exports.posts_get = asyncHandler(async (req, res, next) => {
 
 exports.post_get = asyncHandler(async (req, res, next) => {
   const post = await checkResource(req, Post, '+images', { path: 'author', select: 'username slug' });
-  res.render('postViews/getPost', { title: post.title, post, path: req.baseUrl + req.path });
+  let notRated = true;
+  if (req.user && !post.author._id.equals(req.user._id)) {
+    await post.populate({ path: 'ratings', select: 'reviewer' });
+    for (const rating of post.ratings) {
+      if (rating.reviewer.equals(req.user._id)) {
+        notRated = false;
+        break;
+      }
+    }
+  }
+  res.render('postViews/getPost', { title: post.title, post, path: req.baseUrl + req.path, notRated });
 });
 
 exports.createPost_get = asyncHandler((req, res, next) => {
