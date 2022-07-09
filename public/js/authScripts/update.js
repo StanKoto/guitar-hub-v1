@@ -41,6 +41,7 @@ passwordForm.addEventListener('submit', async (e) => {
 
   const url = `${location.pathname}/update-password`;
   const body = JSON.stringify({ currentPassword, newPassword });
+  const message = 'You have successfully updated your password and should use it for future authorization from now on!';
 
-  await makeRequest(url, method, redirectUrl, body, customPasswordErrors);
+  await makeRequest(url, method, redirectUrl, body, customPasswordErrors, message);
 });
