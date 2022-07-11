@@ -7,7 +7,7 @@
     <textarea name="contents" cols="30" rows="10" maxlength="5000"></textarea>
     <div class="contents error"></div>
     <br>
-    <span>Please choose a post category:</span>
+    <span>Please choose a tip category:</span>
     <br>
     <input type="radio" id="category-one" name="category" value="Guitar, strings and accessories choice">
     <label for="category-one">Guitar, strings and accessories choice</label>
@@ -22,10 +22,10 @@
     <label for="images">Upload images</label>
     <input type="file" id="images" multiple>
     <div class="image error"></div>
-    <button>Publish post</button>
+    <button>Publish tip</button>
   </form>
   <br><br>
-  <a href="/guitar-tips">To the guitar tips overview</a>
+  <a href="/tips-overview">To the guitar tips overview</a>
 
-  <script type="module" src="/js/postScripts/createPost.js"></script>
+  <script type="module" src="/js/tipScripts/createTip.js"></script>
 <%- include('../partials/footer'); %>

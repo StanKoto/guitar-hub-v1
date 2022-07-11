@@ -12,7 +12,7 @@ if (ratingForm) {
 
     const rating = ratingForm.rating.value;
 
-    const url = `${location.pathname}/post-ratings`;
+    const url = `${location.pathname}/tip-ratings`;
     const method = 'POST';
     const redirectUrl = location.pathname;
     const body = JSON.stringify({ rating });

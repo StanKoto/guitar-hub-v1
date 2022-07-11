@@ -22,7 +22,7 @@ detailsForm.addEventListener('submit', async (e) => {
   const username = detailsForm.username.value;
   const email = detailsForm.email.value;
 
-  const url = `${location.pathname}/update-details`;
+  const url = `${location.pathname}/my-details`;
   let body = {};
   if (username.length !== 0) body.username = username
   if (email.length !== 0) body.email = email
@@ -39,7 +39,7 @@ passwordForm.addEventListener('submit', async (e) => {
   const currentPassword = passwordForm.currentPassword.value;
   const newPassword = passwordForm.newPassword.value;
 
-  const url = `${location.pathname}/update-password`;
+  const url = `${location.pathname}/my-password`;
   const body = JSON.stringify({ currentPassword, newPassword });
   const message = 'You have successfully updated your password and should use it for future authorization from now on!';
 

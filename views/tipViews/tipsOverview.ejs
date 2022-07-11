@@ -1,0 +1,26 @@
+<%- include('../partials/header'); %>
+  <h1>Here you can find most cool guitar tips on the net!</h1>
+  <br>
+  <p><a href="/tips-overview/tips">View all tips</a></p>
+  <p>View by category:</p>
+  <ul>
+    <li>
+      <a href="/tips-overview/tips?category=Guitar,%20strings%20and%20accessories%20choice">
+        Guitar, strings and accessories choice
+      </a>
+    </li>
+    <li><a href="/tips-overview/tips?category=Care%20and%20maintenance">Care and maintenance</a></li>
+    <li><a href="/tips-overview/tips?category=Recording%20and%20amplification">Recording and amplification</a></li>
+    <li><a href="/tips-overview/tips?category=Other%20topics">Other topics</a></li>
+  </ul>
+  <% if (currentUser) { %>
+    <p>
+      <span>
+        <a href="/tips-overview/new-tip-form">Share my guitar tips</a>
+        <a href="/tips-overview/tips?author=<%= currentUser._id %>">View my published tips</a>
+      </span>
+    </p>
+  <% } %>
+  <br>
+  <a href="/">Go back to main menu</a>
+<%- include('../partials/footer'); %>

@@ -1,7 +1,7 @@
 <%- include('../partials/header'); %>
   <% if (data.results.length === 0) { %>
-    <% if (path.includes('post-ratings')) { %>
-      <h3>Sorry, there either are no ratings matching your search criteria or this post hasn't received any ratings yet.</h3>
+    <% if (path.includes('tip-ratings')) { %>
+      <h3>Sorry, there either are no ratings matching your search criteria or this tip hasn't received any ratings yet.</h3>
     <% } else if (path.includes('given-ratings')) { %>
       <h3>Sorry, there either are no ratings matching your search criteria or this user hasn't given any ratings yet.</h3>
     <% } else { %>
@@ -11,7 +11,7 @@
     <span>
       <h3>Sort by: </h3> 
       Rating <button id="rating-asc">Asc</button> <button id="rating-desc">Desc</button>
-      <% if (path.includes('post-ratings') || path.includes('received-ratings')) { %>
+      <% if (path.includes('tip-ratings') || path.includes('received-ratings')) { %>
         Reviewer <button id="reviewer-asc">Asc</button> <button id="reviewer-desc">Desc</button>
       <% } else { %>
         Recipient <button id="recipient-asc">Asc</button> <button id="recipient-desc">Desc</button>
@@ -20,7 +20,7 @@
     </span>
     <ul>
       <% for (rating of data.results) { %>
-        <li>Post: <%= rating.post.title %></li>
+        <li>Tip: <%= rating.tip.title %></li>
         <% if (rating.recipient) { %>
           <li>Author: <%= rating.recipient.username %></li>
         <% } else { %>
@@ -37,10 +37,10 @@
     <%- include('../partials/pagination'); %>
   <% } %>
   <br>
-  <% if (path.includes('post-ratings')) { %>
-    <a href="/posts/<%= id %>/<%= slug %>">Back to the post</a>
+  <% if (path.includes('tip-ratings')) { %>
+    <a href="/tips-overview/tips/<%= id %>/<%= slug %>">Back to the tip page</a>
   <% } else { %>
-    <a href="/users/<%= id %>/<%= slug %>">Back to the user</a>
+    <a href="/user-management/users/<%= id %>/<%= slug %>">Back to the user page</a>
   <% } %>
   
   <script type="module" src="/js/ratingScripts/getRatings.js"></script>

@@ -2,28 +2,28 @@
   <ul>
     <li>Username: <%= user.username %></li>
     <li>Email: <%= user.email %></li>
-    <li>Posts published: <%= user.postCount %> </li>
+    <li>Tips published: <%= user.tipCount %> </li>
     <li>Status: <%= user.status %></li>
     <li>Role: <%= user.role %></li>
   </ul>
   <br>
-  <a href="/posts/author-posts?author=<%= user._id %>">View all user's posts</a>
+  <a href="/tips-overview/tips?author=<%= user._id %>">View all user's tips</a>
   <br>
   <span>
-    <a href="<%= path %>/user-ratings/given-ratings?reviewer=<%= user._id %>">
+    <a href="<%= path %>/user-ratings/given-ratings">
       View all given ratings
     </a>
-    <a href="<%= path %>/user-ratings/received-ratings?recipient=<%= user._id %>">
+    <a href="<%= path %>/user-ratings/received-ratings">
       View all received ratings
     </a>
   </span>
   <br><br>
-  <a href="<%= path %>/update-user">Update user</a>
+  <a href="<%= path %>/user-edit-form">Update user</a>
   <button id="delete-user">Delete user</button>
   <br>
-  <a href="/users">Back to all users</a>
+  <a href="/user-management/users">View all users</a>
   <br><br>
-  <a href="/manage-users">To the user management overview</a>
+  <a href="/user-management">To the user management overview</a>
 
   <script type="module" src="/js/userScripts/deleteUser.js"></script>
 <%- include('../partials/footer'); %>

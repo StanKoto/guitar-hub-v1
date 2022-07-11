@@ -18,7 +18,7 @@ form.addEventListener('submit', async (e) => {
   const password = form.password.value;
   const role = form.role.value;
 
-  const url = location.pathname;
+  const url = '/user-management/users';
   const method = 'POST';
   const redirectUrl = 'user';
   const body = JSON.stringify({ username, email, password, role });

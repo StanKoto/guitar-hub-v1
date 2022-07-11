@@ -27,9 +27,9 @@ form.addEventListener('submit', async (e) => {
     formData.append('images', image);
   }
 
-  const url = location.pathname;
+  const url = '/tips-overview/tips';
   const method = 'POST';
-  const redirectUrl = 'post';
+  const redirectUrl = 'tip';
 
   await makeRequest(url, method, redirectUrl, formData, customErrors);
 });

@@ -1,0 +1,37 @@
+<%- include('../partials/header'); %>
+  <form>
+    <h3>Search all tips in this category</h3>
+    <span>
+      <label for="searchText">Please enter your search text here:</label>
+      <input type="text" name="searchText">
+      <button>Search</button>
+    </span>
+  </form>
+  <% if (data.results.length === 0) { %>
+    <h3>Sorry, there seem to currently be no tips matching your search criteria.</h3>
+  <% } else { %>
+    <span>
+      <h3>Sort by: </h3> 
+      Title <button id="title-asc">Asc</button> <button id="title-desc">Desc</button>
+      Rating <button id="rating-asc">Asc</button> <button id="rating-desc">Desc</button>
+      Last updated <button id="updated-asc">Asc</button> <button id="updated-desc">Desc</button>
+    </span>
+    <ul>
+      <% for (tip of data.results) { %>
+        <li>
+          <a href="<%= path %>/<%= tip._id %>/<%= tip.slug %>"><%= tip.title %></a>
+          <br>
+          <span>Category: <%= tip.category %></span>
+          <br>
+          <span>Author: <%= tip.author.username %></span>
+          <br><br>
+        </li>
+      <% } %>
+    </ul>
+    <%- include('../partials/pagination'); %>
+  <% } %>
+  <br><br>
+  <a href="/tips-overview">To the guitar tips overview</a>
+
+  <script type="module" src="/js/tipScripts/getTips.js"></script>
+<%- include('../partials/footer'); %>

@@ -2,11 +2,14 @@ exports.searchResults = (model, populate) => async (req, res, next) => {
   let results;
   const query = { ...req.query };
   const excludedFields = [ 'select', 'sort', 'textSearch', 'page', 'limit' ];
-  for (param of excludedFields) {
+  for (const param of excludedFields) {
     delete query[param];
   }
-  const queryString = JSON.stringify(query).replace(/\bgt|gte|lt|lte|in\b/g, match => `$${match}`);
+  let queryString = JSON.stringify(query).replace(/\bgt|gte|lt|lte|in\b/g, match => `$${match}`);
   const adjustedQuery = JSON.parse(queryString);
+  if (req.baseUrl.includes('tip-ratings')) adjustedQuery.tip = req.params.id
+  if (req.path.includes('given-ratings')) adjustedQuery.reviewer = req.params.id
+  if (req.path.includes('received-ratings')) adjustedQuery.recipient = req.params.id
   if (req.query.textSearch) adjustedQuery['$text'] = { $search: req.query.textSearch.split(',').join(' ') }
   results = req.query.textSearch ? model.find(adjustedQuery, { score: { $meta: 'textScore' } }) : model.find(adjustedQuery)
   if (req.query.select) results = results.select(req.query.select.split(',').join(' '))
@@ -23,12 +26,10 @@ exports.searchResults = (model, populate) => async (req, res, next) => {
   const endIndex = page * limit;
   const total = await model.countDocuments();
   results = await results.skip(startIndex).limit(limit);
-
   const pagination = {};
   if (startIndex > 0) pagination.prev = { page: page - 1, limit }
   if (endIndex < total) pagination.next = { page: page + 1, limit }
 
   res.searchResults = { results, pagination };
-
   next();
 };

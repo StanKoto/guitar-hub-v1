@@ -11,7 +11,8 @@ const validatePasswordError = { element: document.querySelector('.validate.passw
 const customDetailsErrors = [ usernameError, emailError ];
 const customPasswordErrors = [ matchPasswordError, validatePasswordError ];
 
-const redirectUrl = location.pathname;
+const urlTemplate = location.pathname.split('/');
+urlTemplate.pop();
 
 detailsForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -21,8 +22,9 @@ detailsForm.addEventListener('submit', async (e) => {
   const username = detailsForm.username.value;
   const email = detailsForm.email.value;
   
-  const url = `${location.pathname}/update-details`;
+  const url = `${urlTemplate.join('/')}/user-details`;
   const method = 'PUT';
+  const redirectUrl = 'user-edit-form';
   let body = {};
   if (username.length !== 0) body.username = username
   if (email.length !== 0) body.email = email
@@ -39,8 +41,9 @@ passwordForm.addEventListener('submit', async (e) => {
   const adminPassword = passwordForm.adminPassword.value;
   const newPassword = passwordForm.newPassword.value;
 
-  const url = `${location.pathname}/update-password`;
+  const url = `${urlTemplate.join('/')}/user-password`;
   const method = 'PUT';
+  const redirectUrl = location.pathname;
   const body = JSON.stringify({ adminPassword, newPassword });
   const message = 'User password has been successfully updated and should be used for future authorization from now on!';
 

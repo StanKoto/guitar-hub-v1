@@ -14,8 +14,8 @@ form.addEventListener('submit', (e) => {
 
 setupSorting('username-asc', 'username');
 setupSorting('username-desc', '-username');
-setupSorting('postcount-asc', 'postCount');
-setupSorting('postcount-desc', '-postCount');
+setupSorting('tip-count-asc', 'tipCount');
+setupSorting('tip-count-desc', '-tipCount');
 setupSorting('status-asc', 'status');
 setupSorting('status-desc', '-status');
 setupSorting('role-asc', 'role');

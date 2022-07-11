@@ -26,9 +26,9 @@ exports.checkPassword = async (req, user, password) => {
   if (!isMatch) throw new Error(errorMessage)
 };
 
-exports.checkAuthorship = (req, post) => {
-  if ((!post.author || post.author && !post.author.equals(req.user._id)) && req.user.role === 'user') {
-    throw new ErrorResponse('You are not authorized to alter or delete this post!', 401);
+exports.checkAuthorship = (req, tip) => {
+  if ((!tip.author || tip.author && !tip.author.equals(req.user._id)) && req.user.role === 'user') {
+    throw new ErrorResponse('You are not authorized to alter or delete this tip!', 401);
   }
 };
 
