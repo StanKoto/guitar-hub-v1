@@ -1,22 +1,22 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 
-const postSchema = new mongoose.Schema({
+const tipSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [ true, 'Please provide a post title' ],
+    required: [ true, 'Please provide a tip title' ],
     maxLength: [ 50, 'Maximum title length is 50 characters' ]
   },
   slug: String,
   contents: {
     type: String,
-    required: [ true, 'Please enter some post contents' ],
+    required: [ true, 'Please enter some tip contents' ],
     maxLength: [ 5000, 'Maximum contents length is 5000 characters' ]
   },
   category: {
     type: String,
     enum: [ 'Guitar, strings and accessories choice', 'Care and maintenance', 'Recording and amplification', 'Other topics' ],
-    required: [ true, 'Please choose a category for your post' ]
+    required: [ true, 'Please choose a category for your tip' ]
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -28,7 +28,7 @@ const postSchema = new mongoose.Schema({
   images: {
     type: [ Buffer ],
     select: false,
-    validate: [ arrayLimit, 'The number of {PATH} attached to the post would exceeed the limit of 10, please select less images or delete some of the already attached ones' ]
+    validate: [ arrayLimit, 'The number of {PATH} provided the tip would exceeed the limit of 10, please select less images or delete some of the already attached ones' ]
   }
 },
 {
@@ -41,16 +41,16 @@ function arrayLimit(val) {
   return val.length <= 10;
 };
 
-postSchema.virtual('ratings', {
+tipSchema.virtual('ratings', {
   ref: 'Rating',
   localField: '_id',
-  foreignField: 'post',
+  foreignField: 'tip',
   justOne: false
 });
 
-postSchema.index({ title: 'text', contents: 'text' });
+tipSchema.index({ title: 'text', contents: 'text' });
 
-postSchema.statics.getPostCount = async function (authorId) {
+tipSchema.statics.getTipCount = async function (authorId) {
   const aggregationResults = await this.aggregate([
     {
       $match: { author: authorId }
@@ -58,36 +58,36 @@ postSchema.statics.getPostCount = async function (authorId) {
     {
       $group: {
         _id: null,
-        postCount: {$count: { }}
+        tipCount: {$count: { }}
       }
     }
   ]);
 
-  const postCount = aggregationResults.length !== 0 ? aggregationResults[0].postCount : 0;
+  const tipCount = aggregationResults.length !== 0 ? aggregationResults[0].tipCount : 0;
 
   try {
-    await this.model('User').findByIdAndUpdate(authorId, { postCount });
+    await this.model('User').findByIdAndUpdate(authorId, { tipCount });
   } catch (err) {
     console.error(err);
   }
 };
 
-postSchema.pre('save', function (next) {
+tipSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
   next();
 });
 
-postSchema.post('save', function () {
-  this.constructor.getPostCount(this.author);
+tipSchema.post('save', function () {
+  this.constructor.getTipCount(this.author);
 });
 
-postSchema.post('remove', function () {
-  this.constructor.getPostCount(this.author);
+tipSchema.post('remove', function () {
+  this.constructor.getTipCount(this.author);
 });
 
-postSchema.pre('remove', async function () {
-  await this.model('Rating').deleteMany({ post: this._id });
+tipSchema.pre('remove', async function () {
+  await this.model('Rating').deleteMany({ tip: this._id });
 });
 
 
-exports.Post = mongoose.model('Post', postSchema);
+exports.Tip = mongoose.model('Tip', tipSchema);

@@ -5,7 +5,7 @@ document.getElementById('delete-user').addEventListener('click', async (e) => {
 
   const url = location.pathname;
   const method = 'DELETE';
-  const redirectUrl = '/users';
+  const redirectUrl = '/user-management/users';
 
   await makeRequest(url, method, redirectUrl);
 });

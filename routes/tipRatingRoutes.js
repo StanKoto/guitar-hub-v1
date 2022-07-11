@@ -3,12 +3,12 @@ const { searchResults } = require('../middleware/searchResults');
 const { Rating } = require('../models/Rating');
 const { ratings_get, ratings_post } = require('../controllers/ratingController');
 
-const ratingRouter = express.Router({ mergeParams: true });
+const tipRatingRouter = express.Router({ mergeParams: true });
 
-ratingRouter.route('/')
+tipRatingRouter.route('/')
   .get(searchResults(Rating, [
   { 
-    path: 'post', 
+    path: 'tip', 
     select: 'title' 
   }, 
   { 
@@ -22,4 +22,4 @@ ratingRouter.route('/')
 ]), ratings_get)
   .post(ratings_post);
 
-module.exports = ratingRouter;
+module.exports = tipRatingRouter;

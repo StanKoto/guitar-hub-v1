@@ -43,7 +43,7 @@ exports.forgotPassword_post = asyncHandler(async (req, res, next) => {
   if (!user) throw new Error('Invalid email');
   const resetToken = user.getResetPasswordToken();
   await user.save({ validateBeforeSave: false });
-  const resetUrl = `${req.protocol}://${req.get('host')}/auth/resetpassword/${resetToken}`;
+  const resetUrl = `${req.protocol}://${req.get('host')}/auth/reset-password/${resetToken}`;
   const message = `You are receiving this email because you (or someone else) have requested the reset of your password. If it weren't you, simply ignore this message, otherwise follow the link below to complete the password change: \n\n ${resetUrl}`;
   try {
     await sendEmail(req.body.email, 'Password reset link', message);
@@ -71,7 +71,7 @@ exports.resetPassword_put = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true });
 });
 
-exports.updateProfile_get = asyncHandler(async (req, res, next) => {
+exports.myProfile_get = asyncHandler(async (req, res, next) => {
   const user = await checkResource(req, User);
   res.render('authViews/updateDetails', { title: 'Update my details', user });
 });

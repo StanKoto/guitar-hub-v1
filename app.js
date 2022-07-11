@@ -1,8 +1,8 @@
 // const https = require('https');
 // const fs = require('fs');
 const path = require('path');
-const express = require('express');
 const dotenv = require('dotenv');
+const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -12,12 +12,13 @@ const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
-const mainRouter = require('./routes/mainRoutes');
-const userRouter = require('./routes/userRoutes');
-const postRouter = require('./routes/postRoutes');
-const authRouter = require('./routes/authRoutes');
-const { handleErrors } = require('./utils/errorHandling');
 const { checkUser } = require('./middleware/auth');
+const authRouter = require('./routes/authRoutes');
+const tipRouter = require('./routes/tipRoutes');
+const userRouter = require('./routes/userRoutes');
+const errorRouter = require('./routes/errorRoutes');
+const mainRouter = require('./routes/mainRoutes');
+const { handleErrors } = require('./utils/errorHandling');
 
 dotenv.config({ path: path.join(__dirname, 'config.env') });
 
@@ -64,8 +65,9 @@ app.use(hpp());
 app.use(cors());
 
 app.use(checkUser);
-app.use('/users', userRouter);
-app.use('/posts', postRouter);
 app.use('/auth', authRouter);
+app.use('/tips-overview', tipRouter);
+app.use('/user-management', userRouter);
+app.use('/errors', errorRouter);
 app.use(mainRouter);
 app.use(handleErrors);

@@ -9,6 +9,8 @@ const imageError = { element: document.querySelector('.image.error'), errorType:
 
 const customContentErrors = [ titleError, contentsError ];
 
+const urlTemplate = location.pathname.split('/');
+urlTemplate.pop();
 const imgRedirectUrl = location.pathname;
 
 contentForm.addEventListener('submit', async (e) => {
@@ -18,9 +20,9 @@ contentForm.addEventListener('submit', async (e) => {
 
   const category = contentForm.category.value;
 
-  const url = location.pathname;
+  const url = urlTemplate.join('/');
   const method = 'PUT';
-  const redirectUrl = 'post';
+  const redirectUrl = 'tip-edit-form';
   let body = {};
   body.title = contentForm.title.value;
   body.contents = contentForm.contents.value;
@@ -42,7 +44,7 @@ imageForm.addEventListener('submit', async (e) => {
     formData.append('images', image);
   }
 
-  const url = `${location.pathname}/images`;
+  const url = `${urlTemplate.join('/')}/images`;
   const method = 'POST';
 
   await makeRequest(url, method, imgRedirectUrl, formData, [ imageError ]);
@@ -52,7 +54,7 @@ for (const item of document.querySelectorAll('.delete.image')) {
   item.addEventListener('click', async (e) => {
     e.preventDefault();
 
-    const url = `${location.pathname}/images/${item.id}`;
+    const url = `${urlTemplate.join('/')}/images/${item.id}`;
     const method = 'DELETE';
 
     await makeRequest(url, method, imgRedirectUrl);

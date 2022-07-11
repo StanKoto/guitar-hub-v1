@@ -20,8 +20,8 @@ const handleErrors = (err, req, res, next) => {
   };
 
   if (err.code === 11000) {
-    if ('post' in err.keyValue && 'reviewer' in err.keyValue) {
-      errors.rating = 'You have already rated this post';
+    if ('tip' in err.keyValue && 'reviewer' in err.keyValue) {
+      errors.rating = 'You have already rated this tip';
     } else {
       errors[Object.keys(err.keyValue)[0]] = `That ${Object.keys(err.keyValue)[0]} is already registered`;
     }
@@ -57,8 +57,8 @@ const handleErrors = (err, req, res, next) => {
     case 'Invalid token':
       errors.token = 'This token is invalid or has already expired, please go to the auth page and request another token!';
       return res.status(400).json({ errors });
-    case 'Own post rated':
-      errors.ownPost = 'You cannot rate your own posts';
+    case 'Own tip rated':
+      errors.rating = 'You cannot rate your own tips';
       return res.status(401).json({ errors });
     case 'Not an image':
       errors.images = 'Please select only image files formatted as JPEG or PNG';
@@ -74,7 +74,7 @@ const handleErrors = (err, req, res, next) => {
       return res.status(400).json({ errors });
     default:
       console.error(err);
-      if (req.method === 'GET') return res.status(500).redirect('/server-error');
+      if (req.method === 'GET') return res.status(500).redirect('/errors/server-error');
       res.status(500).json({ otherErrors: true });
   }
 };

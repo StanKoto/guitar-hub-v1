@@ -12,25 +12,36 @@ const makeRequest = async (url, method, redirectUrl, body, customErrors, message
     const res = await fetch(url, params);
     const data = await res.json();
     if (data.errors) {
-      if (data.errors.ownPost) alert(data.errors.ownPost)
       for (const error of customErrors) {
         error.element.textContent = data.errors[error.errorType];
       }
     } else if (data.otherErrors) {
       switch (res.status) {
         case 401:
-          location.assign(`/unauthorized?message=${data.message}`);
+          location.assign(`/errors/unauthorized?message=${data.message}`);
           break;
         case 404:
-          location.assign(`/bad-request?message=${data.message}`);
+          location.assign(`/errors/bad-request?message=${data.message}`);
           break;
         default:
-          location.assign('/server-error');
+          location.assign('/errors/server-error');
       }
     } else {
-      if (data.selfUpdate && data.user.role === 'user') return location.assign('/auth/update')
-      if (redirectUrl === 'post') redirectUrl = `/posts/${data.post._id}/${data.post.slug}`
-      if (redirectUrl === 'user') redirectUrl = `/users/${data.user._id}/${data.user.slug}`
+      if (data.selfUpdate && data.user.role === 'user') return location.assign('/auth/my-profile')
+      switch (redirectUrl) {
+        case 'tip':
+          redirectUrl = `/tips-overview/tips/${data.tip._id}/${data.tip.slug}`;
+          break;
+        case 'tip-edit-form':
+          redirectUrl = `/tips-overview/tips/${data.tip._id}/${data.tip.slug}/tip-edit-form`;
+          break;
+        case 'user':
+          redirectUrl = `/user-management/users/${data.user._id}/${data.user.slug}`;
+          break;
+        case 'user-edit-form':
+          redirectUrl = `/user-management/users/${data.user._id}/${data.user.slug}/user-edit-form`;
+          break;
+      }
       if (message) alert(message)
       location.assign(redirectUrl);
     }

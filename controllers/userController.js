@@ -8,12 +8,16 @@ const {
 } = require('../utils/helperFunctions');
 const { ErrorResponse } = require('../utils/errorHandling');
 
-exports.users_get = asyncHandler(async (req, res, next) => {
-  res.render('userViews/getUsers', { title: 'Users', data: res.searchResults });
+exports.userManagement_get = asyncHandler((req, res, next) => {
+  res.render('userViews/userManagement', { title: 'User Management' });
 });
 
-exports.createUser_get = asyncHandler((req, res, next) => {
+exports.newUserForm_get = asyncHandler((req, res, next) => {
   res.render('userViews/createUser', { title: 'Create new user' });
+});
+
+exports.users_get = asyncHandler(async (req, res, next) => {
+  res.render('userViews/getUsers', { title: 'Users', data: res.searchResults, path: req.baseUrl + req.path });
 });
 
 exports.users_post = asyncHandler(async (req, res, next) => {
@@ -32,7 +36,7 @@ exports.user_delete = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true });
 });
 
-exports.updateUser_get = asyncHandler(async (req, res, next) => {
+exports.userEditForm_get = asyncHandler(async (req, res, next) => {
   const user = await checkResource(req, User);
   res.render('userViews/updateUser', { title: 'Update user details', user });
 });
