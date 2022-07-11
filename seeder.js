@@ -2,17 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const { Post } = require('./models/Post');
+const { Tip } = require('./models/Tip');
 const { User } = require('./models/User');
 const { Rating } = require('./models/Rating');
 
 dotenv.config({ path: path.join(__dirname, 'config.env') });
-const posts = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/posts.json'), 'utf-8'));
+const tips = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/tips.json'), 'utf-8'));
 const users = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/users.json'), 'utf-8'));
 const ratings = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/ratings.json'), 'utf-8'));
 
 const insertData = async () => {
-  await Post.create(posts);
+  await Tip.create(tips);
   await User.create(users);
   await Rating.create(ratings);
   console.log('Data inserted!');
@@ -20,7 +20,7 @@ const insertData = async () => {
 };
 
 const deleteData = async () => {
-  await Post.deleteMany();
+  await Tip.deleteMany();
   await User.deleteMany();
   await Rating.deleteMany();
   console.log('Data deleted!');
