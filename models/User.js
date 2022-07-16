@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: [ true, 'Please provide a username' ],
-    unique: true
+    unique: true,
+    maxLength: [ 25, 'Maximum username length is 25 characters' ]
   },
   slug: String,
   email: {
@@ -21,7 +22,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [ true, 'Please provide a password' ],
-    minlength: [ 6, 'Minimum password length is 6 characters' ],
+    minLength: [ 6, 'Minimum password length is 6 characters' ],
     select: false
   },
   tipCount: {
