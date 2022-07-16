@@ -3,7 +3,7 @@ const { asyncHandler, checkAuthorship, checkUserStatus, checkResource, processIm
 const { ErrorResponse } = require('../utils/errorHandling');
 
 exports.tipsOverview_get = asyncHandler((req, res, next) => {
-  res.render('tipViews/tipsOverview', { title: 'Guitar Tips' });
+  res.render('tipViews/tipsOverview', { title: 'Tips Overview' });
 });
 
 exports.tips_get = asyncHandler(async (req, res, next) => {

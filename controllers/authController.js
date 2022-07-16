@@ -73,7 +73,7 @@ exports.resetPassword_put = asyncHandler(async (req, res, next) => {
 
 exports.myProfile_get = asyncHandler(async (req, res, next) => {
   const user = await checkResource(req, User);
-  res.render('authViews/updateDetails', { title: 'Update my details', user });
+  res.render('authViews/myProfile', { title: 'Update my details', user });
 });
 
 exports.myDetails_put = asyncHandler(async (req, res, next) => {
