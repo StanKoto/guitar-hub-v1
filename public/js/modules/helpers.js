@@ -96,4 +96,30 @@ const setupSorting = (elementId, sortingField) => {
   });
 };
 
-export { emptyErrors, makeRequest, adjustUrl, setupSorting };
+const setupSearch = (searchForm, inputName) => {
+  searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const searchText = searchForm[inputName].value;
+    if (searchText.length === 0) return location.reload()
+  
+    const url = adjustUrl('textSearch', searchText);
+    location.assign(url);
+  });
+};
+
+const setupPagination = (elementIds) => {
+  for (const id of elementIds) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('click', (e) => {
+        e.preventDefault();
+  
+        const url = adjustUrl('page', element.value);
+        location.assign(url);
+      });
+    }
+  }
+};
+
+export { emptyErrors, makeRequest, adjustUrl, setupSorting, setupSearch, setupPagination };

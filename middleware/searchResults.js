@@ -27,8 +27,8 @@ exports.searchResults = (model, populate) => async (req, res, next) => {
   const total = await model.countDocuments();
   results = await results.skip(startIndex).limit(limit);
   const pagination = {};
-  if (startIndex > 0) pagination.prev = { page: page - 1, limit }
-  if (endIndex < total) pagination.next = { page: page + 1, limit }
+  if (startIndex > 0) pagination.prev = page - 1
+  if (endIndex < total) pagination.next = page + 1
 
   res.searchResults = { results, pagination };
   next();
