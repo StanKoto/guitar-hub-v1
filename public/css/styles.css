@@ -149,14 +149,10 @@ main{
   margin: auto;
   width: auto;
 }
-.tip.title, .tip.content, .tip.images{
-  display: block;
-  max-width: 763px;
-}
 main img{
   width: 250px;
 }
-main .delete-image{
+.delete-image{
   margin: auto;
   width: 80%;
 }

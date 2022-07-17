@@ -14,7 +14,10 @@ const ratings = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/ratings.js
 const insertData = async () => {
   await User.create(users);
   await Tip.create(tips);
-  await Rating.create(ratings);
+  for (const rating of ratings) {
+    const newRating = new Rating(rating);
+    await newRating.save();
+  }
   console.log('Data inserted!');
   process.exit();
 };

@@ -1,14 +1,14 @@
 <%- include('../partials/header'); %>
   <main>
-    <p class="tip title"><%= tip.title %></p>
+    <p><%= tip.title %></p>
     <br><br>
-    <p class="tip content"><%= tip.contents %></p>
+    <p><%= tip.contents %></p>
     <br><br>
-    <span class="tip images">
+    <span>
       <% for (const image of tip.images) { %>
         <img src="data:image/png;base64,<%= image.toString('base64') %>" alt="Tip image">
       <% } %>
-      </span>
+    </span>
     <br><br>
     <div>
       <p>Category: <%= tip.category %></p>
