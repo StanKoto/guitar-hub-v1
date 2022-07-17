@@ -182,6 +182,10 @@ form{
   border-radius: 10px;
   background: white;
 }
+form .error{
+  margin: auto;
+  width: 350px;
+}
 form p{
   display: block;
   margin: 10px 10px;
@@ -257,7 +261,6 @@ form button{
 }
 .error{
   color: #ff0099;
-  margin: 10px 2px;
   font-size: 0.8em;
   font-weight: bold;
 }

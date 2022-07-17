@@ -2,7 +2,8 @@ const crypto = require('crypto');
 const { User } = require('../models/User');
 const { 
   asyncHandler, 
-  regenerateSession, 
+  regenerateSession,
+  clearSessionUser, 
   checkPassword, 
   checkResource, 
   checkResourceAndUpdate
@@ -90,12 +91,5 @@ exports.myPassword_put = asyncHandler(async (req, res, next) => {
 });
 
 exports.logout_get = asyncHandler((req, res, next) => {
-  req.session.user = null;
-  req.session.save(err => {
-    if (err) throw err
-    req.session.regenerate(err => {
-      if (err) throw err
-      res.status(200).redirect('/auth');
-    });
-  });
+  clearSessionUser(req, res, false);
 });

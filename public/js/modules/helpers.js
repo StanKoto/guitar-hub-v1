@@ -42,6 +42,7 @@ const makeRequest = async (url, method, redirectUrl, body, customErrors, message
           redirectUrl = `/user-management/users/${data.user._id}/${data.user.slug}/user-edit-form`;
           break;
       }
+      if (data.selfDelete) return location.assign('/auth')
       if (message) alert(message)
       location.assign(redirectUrl);
     }

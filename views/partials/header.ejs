@@ -14,6 +14,7 @@
       <% if (!currentUser) { %>
         <a class="btn" href="/auth">Register / Log in</a>
       <% } else { %>
+        <p>Welcome, <%= currentUser.username %>!</p>
         <a class="btn" href="/auth/my-profile">Manage my profile</a>
         <a class="btn" href="/auth/logout">Log out</a>
       <% } %>

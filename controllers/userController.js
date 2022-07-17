@@ -1,7 +1,8 @@
 const { User } = require('../models/User');
 const { 
   asyncHandler, 
-  regenerateSession, 
+  regenerateSession,
+  clearSessionUser, 
   checkPassword, 
   checkResource, 
   checkResourceAndUpdate
@@ -33,6 +34,7 @@ exports.user_get = asyncHandler(async (req, res, next) => {
 exports.user_delete = asyncHandler(async (req, res, next) => {
   const user = await checkResource(req, User);
   await user.remove();
+  if (user._id.equals(req.user._id)) return clearSessionUser(req, res, true)
   res.status(200).json({ success: true });
 });
 

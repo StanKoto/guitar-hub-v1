@@ -13,8 +13,20 @@ exports.regenerateSession = (req, res, user, status = 200) => {
     req.session.user = user._id;
     req.session.save(err => {
       if (err) throw err
-      if (req.params.id) return res.status(status).json({ user, selfUpdate: true });
+      if (req.params.id && !req.body.newPassword) return res.status(status).json({ user, selfUpdate: true });
       res.status(status).json({ success: true });
+    });
+  });
+};
+
+exports.clearSessionUser = (req, res, selfDelete) => {
+  req.session.user = null;
+  req.session.save(err => {
+    if (err) throw err
+    req.session.regenerate(err => {
+      if (err) throw err
+      if (selfDelete) return res.status(200).json({ selfDelete })
+      res.status(200).redirect('/auth');
     });
   });
 };
