@@ -24,7 +24,9 @@
           <table>
             <tr><td><%= tip.title %></td></tr>
             <tr><td>Category: <%= tip.category %></td></tr>
-            <tr><td>Average rating: <%= tip.averageRating %></td></tr>
+            <% if (tip.averageRating) { %>
+              <tr><td>Average rating: <%= tip.averageRating %></td></tr>
+            <% } %>
           </table>
           <a class="btn" href="<%= path %>/<%= tip._id %>/<%= tip.slug %>">Read tip</a>
         </div>
