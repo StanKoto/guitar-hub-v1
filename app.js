@@ -1,5 +1,3 @@
-const https = require('https');
-const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
 const express = require('express');
@@ -28,8 +26,7 @@ const PORT = process.env.PORT || 3000;
 mongoose.connect(process.env.MONGO_URI)
   .then(res => {
     console.log('MongoDB successfully connected');
-    const options = { key: fs.readFileSync('key.pem'), cert: fs.readFileSync('cert.pem') };
-    https.createServer(options, app).listen(PORT, console.log(`Listening on port ${PORT}`));
+    app.listen(PORT, console.log(`Listening on port ${PORT}`));
   })
   .catch(err => console.error(err));
 

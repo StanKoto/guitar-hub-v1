@@ -1,7 +1,7 @@
 {
-  "name": "guitar_wiki",
+  "name": "guitar-hub",
   "version": "1.0.0",
-  "description": "A simple wiki for guitar manufacturers",
+  "description": "A platform for sharing your guitar related experience",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
