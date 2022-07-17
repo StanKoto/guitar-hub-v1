@@ -40,12 +40,14 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.set('trust proxy', 1);
 app.use(session({
   secret: process.env.SESSION_SECRET,
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   resave: false,
   saveUninitialized: true,
   cookie: {
+    secure: true,
     httpOnly: true,
     maxAge: 10800000
   }
@@ -55,12 +57,12 @@ app.use(mongoSanitize());
 app.use(helmet());
 app.use(xss());
 
-// const limiter = rateLimit({
-//   windowMs: 10 * 60 * 1000,
-//   max: 100
-// });
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 100
+});
 
-// app.use(limiter);
+app.use(limiter);
 app.use(hpp());
 app.use(cors());
 
