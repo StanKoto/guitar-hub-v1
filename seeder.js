@@ -1,12 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const config = require('./envVariables');
 const { User } = require('./models/User');
 const { Tip } = require('./models/Tip');
 const { Rating } = require('./models/Rating');
 
-dotenv.config({ path: path.join(__dirname, 'config.env') });
 const users = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/users.json'), 'utf-8'));
 const tips = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/tips.json'), 'utf-8'));
 const ratings = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/ratings.json'), 'utf-8'));
@@ -30,7 +29,7 @@ const deleteData = async () => {
   process.exit();
 };
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(config.db.mongoUri)
   .then(res => {
     if (process.argv[2] === '-i') {
       insertData();

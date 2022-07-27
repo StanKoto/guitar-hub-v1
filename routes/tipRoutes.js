@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const config = require('../envVariables');
 const { checkAuthentication } = require('../middleware/auth');
 const { searchResults } = require('../middleware/searchResults');
 const { Tip } = require('../models/Tip');
@@ -19,7 +20,7 @@ const tipRatingRouter = require('../routes/tipRatingRoutes');
 
 const upload = multer({
   limits: {
-    fileSize: 2000000
+    fileSize: config.multer.fileSize
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|png)$/)) {
