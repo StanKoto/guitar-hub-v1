@@ -1,5 +1,4 @@
 const path = require('path');
-const dotenv = require('dotenv');
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -10,6 +9,7 @@ const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
+const config = require('./envVariables');
 const { checkUser } = require('./middleware/auth');
 const authRouter = require('./routes/authRoutes');
 const tipRouter = require('./routes/tipRoutes');
@@ -18,12 +18,10 @@ const errorRouter = require('./routes/errorRoutes');
 const mainRouter = require('./routes/mainRoutes');
 const { handleErrors } = require('./utils/errorHandling');
 
-dotenv.config({ path: path.join(__dirname, 'config.env') });
-
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = config.main.port || 3000;
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(config.db.mongoUri)
   .then(res => {
     console.log('MongoDB successfully connected');
     app.listen(PORT, console.log(`Listening on port ${PORT}`));
@@ -36,26 +34,30 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.set('trust proxy', 1);
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+const sessionOptions = {
+  secret: config.session.secret,
+  store: MongoStore.create({ mongoUrl: config.db.mongoUri }),
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: true,
     httpOnly: true,
-    maxAge: 10800000
+    maxAge: config.session.cookieMaxAge
   }
-}));
+};
+
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1);
+  sessionOptions.cookie.secure = true;
+}
+app.use(session(sessionOptions));
 
 app.use(mongoSanitize());
 app.use(helmet());
 app.use(xss());
 
 const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000,
-  max: 100
+  windowMs: config.limiter.windowMS,
+  max: config.limiter.max
 });
 
 app.use(limiter);
