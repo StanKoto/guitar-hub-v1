@@ -6,9 +6,9 @@ const { User } = require('./models/User');
 const { Tip } = require('./models/Tip');
 const { Rating } = require('./models/Rating');
 
-const users = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/users.json'), 'utf-8'));
-const tips = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/tips.json'), 'utf-8'));
-const ratings = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/ratings.json'), 'utf-8'));
+const users = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/users.json', 'utf-8')));
+const tips = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/tips.json', 'utf-8')));
+const ratings = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/ratings.json', 'utf-8')));
 
 const insertData = async () => {
   await User.create(users);

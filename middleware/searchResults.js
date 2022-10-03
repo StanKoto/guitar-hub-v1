@@ -12,7 +12,8 @@ exports.searchResults = (model, populate) => async (req, res, next) => {
   if (req.path.includes('received-ratings')) adjustedQuery.recipient = req.params.id
   if (req.query.textSearch) adjustedQuery['$text'] = { $search: req.query.textSearch.split(',').join(' ') }
   results = req.query.textSearch ? model.find(adjustedQuery, { score: { $meta: 'textScore' } }) : model.find(adjustedQuery)
-  if (req.query.select) results = results.select(req.query.select.split(',').join(' '))
+  const sortOut = [ 'password', 'resetPasswordToken', 'resetPasswordExpire' ];
+  if (req.query.select) results = results.select(req.query.select.split(',').filter(attr => !sortOut.includes(attr)).join(' '))
   if (populate) {
     for (const field of populate) {
       results = results.populate(field);

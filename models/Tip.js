@@ -15,7 +15,10 @@ const tipSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: [ 'Guitar, strings and accessories choice', 'Care and maintenance', 'Recording and amplification', 'Other topics' ],
+    enum: { 
+      values: [ 'Guitar, strings and accessories choice', 'Care and maintenance', 'Recording and amplification', 'Other topics' ], 
+      message: '{VALUE} is not a valid category name' 
+    },
     required: [ true, 'Please choose a category for your tip' ]
   },
   author: {

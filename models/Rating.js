@@ -4,7 +4,10 @@ const ratingSchema = new mongoose.Schema({
   rating: {
     type: Number,
     required: [ true, 'Please rate the tip before submitting your vote' ],
-    enum: { values: [1, 2, 3, 4, 5], message: '{VALUE} is not supported, only integers from 1 to 5 are accepted' }
+    enum: { 
+      values: [1, 2, 3, 4, 5], 
+      message: '{VALUE} is not supported, only integers from 1 to 5 are accepted' 
+    }
   },
   tip: {
     type: mongoose.Schema.Types.ObjectId,

@@ -43,7 +43,7 @@
         <% } %>
       </div>
     <% } %>
-    <% if (currentUser && notRated && (!tip.author || tip.author && !tip.author._id.equals(currentUser._id))) { %>
+    <% if (notRated) { %>
       <br><br>
       <p>Rate this tip:</p>
       <form class="custom util rating form">

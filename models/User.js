@@ -31,16 +31,28 @@ const userSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: [ 'active', 'passive' ],
+    enum: {
+      values: [ 'active', 'passive' ],
+      message: '{VALUE} is not a valid status'
+    },
     default: 'passive'
   },
   role: {
     type: String,
-    enum: [ 'admin', 'user' ],
+    enum: {
+      values: [ 'admin', 'user' ],
+      message: '{VALUE} is not a valid role name'
+    },
     default: 'user'
   },
-  resetPasswordToken: String,
-  resetPasswordExpire: Date
+  resetPasswordToken: {
+    type: String,
+    select: false
+  },
+  resetPasswordExpire: {
+    type: Date,
+    select: false
+  }
 }, {
   timestamps: true
 });

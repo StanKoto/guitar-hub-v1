@@ -78,8 +78,9 @@ exports.myProfile_get = asyncHandler(async (req, res, next) => {
 
 exports.myDetails_put = asyncHandler(async (req, res, next) => {
   const user = await checkResource(req, User);
-  if (req.body.username) user.username = req.body.username
-  if (req.body.email) user.email = req.body.email
+  for (key of Object.keys(req.body)) {
+    user[key] = req.body[key];
+  }
   await user.save();
   regenerateSession(req, res, user);
 });

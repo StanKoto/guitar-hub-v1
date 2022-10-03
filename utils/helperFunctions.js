@@ -39,7 +39,7 @@ exports.checkPassword = async (req, user, password) => {
 };
 
 exports.checkAuthorship = (req, tip) => {
-  if ((!tip.author || tip.author && !tip.author.equals(req.user._id)) && req.user.role === 'user') {
+  if ((!tip.author || !tip.author.equals(req.user._id)) && req.user.role === 'user') {
     throw new ErrorResponse('You are not authorized to alter or delete this tip!', 401);
   }
 };
@@ -56,10 +56,12 @@ exports.checkUserStatus = async (req) => {
 
 exports.checkResource = async (req, model, select, populate) => {
   const id = req.params.id || req.user._id;
-  let resource = model.findById(id)
-  if (select) resource = await resource.select(select)
-  if (populate) resource = await resource.populate(populate)
-  if (!resource) throw new ErrorResponse(`No ${model.collection.collectionName.toLowerCase()} found with ID of ${id}`, 404)
+  let resource = model.findById(id);
+  if (select) resource = resource.select(select)
+  if (populate) resource = resource.populate(populate)
+  resource = await resource;
+  const resourceName = model.collection.collectionName.toLowerCase();
+  if (!resource) throw new ErrorResponse(`No ${resourceName.slice(0, resourceName.length - 1)} found with ID of ${id}`, 404)
   return resource;
 };
 
