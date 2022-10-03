@@ -12,8 +12,9 @@ exports.tips_get = asyncHandler(async (req, res, next) => {
 
 exports.tip_get = asyncHandler(async (req, res, next) => {
   const tip = await checkResource(req, Tip, '+images', { path: 'author', select: 'username slug' });
-  let notRated = true;
+  let notRated;
   if (req.user && (!tip.author || !tip.author._id.equals(req.user._id))) {
+    notRated = true;
     await tip.populate({ path: 'ratings', select: 'reviewer' });
     for (const rating of tip.ratings) {
       if (rating.reviewer && rating.reviewer.equals(req.user._id)) {
@@ -52,21 +53,23 @@ exports.tip_delete = asyncHandler(async (req, res, next) => {
 
 exports.tipEditForm_get = asyncHandler(async (req, res, next) => {
   const tip = await checkResource(req, Tip, '+images');
+  checkAuthorship(req, tip);
   res.render('tipViews/updateTip', { title: 'Update tip', tip });
 });
 
 exports.tip_put = asyncHandler(async (req, res, next) => {
   let tip = await checkResource(req, Tip);
   checkAuthorship(req, tip);
-  tip.title = req.body.title;
-  tip.contents = req.body.contents;
-  if (req.body.category) tip.category = req.body.category
+  for (const key of Object.keys(req.body)) {
+    tip[key] = req.body[key];
+  }
   await tip.save();
   res.status(200).json({ tip });
 });
 
 exports.tipImages_post = asyncHandler(async (req, res, next) => {
   const tip = await checkResource(req, Tip, '+images');
+  checkAuthorship(req, tip);
   await processImages(req, tip.images);
   await tip.save();
   res.status(200).json({ success: true });
@@ -74,6 +77,7 @@ exports.tipImages_post = asyncHandler(async (req, res, next) => {
 
 exports.tipImages_delete = asyncHandler(async (req, res, next) => {
   const tip = await checkResource(req, Tip, '+images');
+  checkAuthorship(req, tip);
   if (!tip.images) throw new ErrorResponse(`No images found for tip with id of ${id}`, 404)
   tip.images.splice(req.params.index, 1);
   await tip.save();

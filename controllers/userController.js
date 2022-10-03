@@ -44,9 +44,9 @@ exports.userEditForm_get = asyncHandler(async (req, res, next) => {
 
 exports.userDetails_put = asyncHandler(async (req, res, next) => {
   const user = await checkResource(req, User);
-  if (req.body.username) user.username = req.body.username
-  if (req.body.email) user.email = req.body.email
-  if (req.body.role) user.role = req.body.role
+  for (const key of Object.keys(req.body)) {
+    user[key] = req.body[key];
+  }
   await user.save();
   if (user._id.equals(req.user._id)) return regenerateSession(req, res, user)
   res.status(200).json({ user, selfUpdate: false });
